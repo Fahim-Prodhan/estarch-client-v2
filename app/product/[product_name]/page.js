@@ -151,7 +151,7 @@ const ProductDetails = () => {
               <Image
                 width={500}
                 height={500}
-                src={mainImage}
+                src={`${baseUrl}/${mainImage}`}
                 alt={product?.productName || "Product Image"}
                 className="object-cover"
               />
@@ -164,7 +164,7 @@ const ProductDetails = () => {
                   key={index}
                   width={120} // Set the maximum size for larger screens
                   height={120} // Set the maximum size for larger screens
-                  src={img}
+                  src={`${baseUrl}/${img}`}
                   alt={product?.productName}
                   className="w-20 h-30  md:w-30 md:h-30 lg:w-30 lg:h-30 object-cover cursor-pointer"
                   onClick={() => handleThumbnailClick(img)}
