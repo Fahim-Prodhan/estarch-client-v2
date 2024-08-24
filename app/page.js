@@ -42,25 +42,11 @@ export default function Home() {
     const fetchToggleStates = async () => {
       try {
         const response = await axios.get(`${baseUrl}/api/toggle/toggleStates`);
-        if (response.data && typeof response.data === 'object') {
-          setToggles({
-            webFeature: response.data.webFeature,
-            webArrival: response.data.webArrival,
-            webSellingCategory: response.data.webSellingCategory,
-            webVideo: response.data.webVideo,
-            webProductShowCase: response.data.webProductShowCase,
-            webNewsLetter: response.data.webNewsLetter,
-            webBestDeal: response.data.webBestDeal,
-            mobileFeature: response.data.mobileFeature,
-            mobileArrival: response.data.mobileArrival,
-            mobileSellingCategory: response.data.mobileSellingCategory,
-            mobileVideo: response.data.mobileVideo,
-            mobileProductShowCase: response.data.mobileProductShowCase,
-            mobileNewsLetter: response.data.mobileNewsLetter,
-            mobileBestDeal: response.data.mobileBestDeal,
-          });
+        const data = response.data;
+        if (data && typeof data === 'object') {
+          setToggles(data);
         } else {
-          console.error('Unexpected response data structure:', response.data);
+          console.error('Unexpected response data structure:', data);
         }
       } catch (error) {
         console.error('Error fetching toggle states:', error);
@@ -82,26 +68,14 @@ export default function Home() {
   // Detect if the user is on mobile
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768); // Assuming mobile is <= 768px
+      setIsMobile(window.innerWidth <= 768);
     };
 
-    // Set the initial state
     handleResize();
-
-    // Add event listener for window resizing
     window.addEventListener('resize', handleResize);
 
-    // Clean up the event listener on component unmount
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  // useEffect(() => {
-  //   if (typeof window !== 'undefined') {
-  //     const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-  //     const totalQuantity = JSON.parse(localStorage.getItem('totalQuantity')) || 0;
-  //     dispatch(setInitialState({ items: cartItems, totalQuantity }));
-  //   }
-  // }, [dispatch]);
 
   return (
     <main className="overflow-x-hidden min-h-screen">
@@ -109,8 +83,7 @@ export default function Home() {
       <div className="hidden md:grid">
         <ServiceMoto />
       </div>
-      
-      {/* Conditionally render based on device type and toggle states */}
+
       {!isMobile ? (
         <>
           {toggles.webSellingCategory && <SellingCategory />}    
@@ -123,12 +96,12 @@ export default function Home() {
         </>
       ) : (
         <>
-          {toggles.mobileSellingCategory && <SellingCategory />}    
-          {toggles.mobileArrival && <NewArrival />}                 
-          {toggles.mobileVideo && <VideoGallery />}                
-          {toggles.mobileProductShowCase && <ProductShowcase />}    
-          {toggles.mobileFeature && <FeatureProduct />}            
-          {toggles.mobileNewsLetter && <Subscription />}  
+          {toggles.mobileSellingCategory && <SellingCategory />}
+          {toggles.mobileArrival && <NewArrival />}
+          {toggles.mobileVideo && <VideoGallery />}
+          {toggles.mobileProductShowCase && <ProductShowcase />}
+          {toggles.mobileFeature && <FeatureProduct />}
+          {toggles.mobileNewsLetter && <Subscription />}
         </>
       )}
     </main>

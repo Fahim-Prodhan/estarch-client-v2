@@ -14,6 +14,7 @@ import { PropagateLoader } from 'react-spinners';
 
 export default function HeaderBanner() {
   const [carousels, setCarousels] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCarousels = async () => {
@@ -23,6 +24,8 @@ export default function HeaderBanner() {
         setCarousels(data);
       } catch (error) {
         console.error('Error fetching carousels:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -33,39 +36,41 @@ export default function HeaderBanner() {
     <div className="max-h-[600px] mt-4 lg:mt-8 md:mt-4">
       <div className="relative">
         <Swiper
-          pagination={{
-            clickable: true,
-          }}
+          pagination={{ clickable: true }}
           spaceBetween={30}
           centeredSlides={true}
-          autoplay={{
-            delay: 3500,
-            disableOnInteraction: false,
-          }}
+          autoplay={{ delay: 3500, disableOnInteraction: false }}
           loop={true}
           modules={[Pagination, Autoplay]}
           className="mySwiper"
         >
-          {carousels.length > 0 ? (
-            carousels.map((carousel, index) => (
-              <SwiperSlide key={index} className="w-full">
-                <Link href={carousel.link}>
-                <Image
-                  className="overflow-hidden md:max-h-[600px]"
-                  src={`${baseUrl}/${carousel.images[0]}`}
-                  alt={carousel.name}
-                  width={1200}
-                  height={600}
-                  layout="responsive"
-                  objectFit="cover"
-                />
-                </Link>
-              </SwiperSlide>
-            ))
-          ) : (
+          {loading ? (
             <SwiperSlide className="w-full">
               <p className='flex justify-center'><PropagateLoader color="#060101" /></p>
             </SwiperSlide>
+          ) : (
+            carousels.length > 0 ? (
+              carousels.map((carousel, index) => (
+                <SwiperSlide key={index} className="w-full">
+                  <Link href={carousel.link}>
+                    <Image
+                      className="overflow-hidden md:max-h-[600px]"
+                      src={`${baseUrl}/${carousel.images[0]}`}
+                      alt={`${baseUrl}/${carousel.images[0]}`}
+                      width={1200}
+                      height={600}
+                      layout="responsive"
+                      objectFit="cover"
+                      priority
+                    />
+                  </Link>
+                </SwiperSlide>
+              ))
+            ) : (
+              <SwiperSlide className="w-full">
+                <p className='flex justify-center'>No data available</p>
+              </SwiperSlide>
+            )
           )}
         </Swiper>
       </div>
