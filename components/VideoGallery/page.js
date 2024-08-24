@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import baseUrl from '../services/baseUrl';
+import { YouTubeEmbed } from '@next/third-parties/google';
 
 const VideoGallery = () => {
   const [videos, setVideos] = useState([]);
@@ -18,9 +19,10 @@ const VideoGallery = () => {
     fetchVideos();
   }, []);
 
-  // Function to extract video ID from YouTube URL
   const getYouTubeVideoId = (url) => {
-    const match = url.match(/(?:https?:\/\/)?(?:www\.)?youtu\.be\/([a-zA-Z0-9_-]{11})/);
+    const match = url.match(
+      /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/]+\/[^/]+\/|(?:v|embed|shorts)\/|(?:[^/]+\?v=))|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+    );
     return match ? match[1] : null;
   };
 
@@ -38,14 +40,11 @@ const VideoGallery = () => {
             >
               <h2 className="text-lg font-semibold mb-2 text-center md:text-left">{video.name}</h2>
               <div className="relative w-full pb-[56.25%] h-0">
-                <iframe
+                <YouTubeEmbed
+                width
                   className="absolute top-0 left-0 w-full h-full"
-                  src={`https://www.youtube-nocookie.com/embed/${videoId}?si=rAZooVZ-01UyxkF2`}
-                  title={video.name}
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
+                  videoid={videoId}
+                  params={{ controls: 0 }}
                 />
               </div>
             </div>
