@@ -13,6 +13,7 @@ import { setInitialState } from "@/lib/slices/cartSlice";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import baseUrl from "@/components/services/baseUrl";
+import ExtraSection1 from "@/components/extraSection1/ExtraSection1";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ export default function Home() {
     mobileNewsLetter: false,
     mobileBestDeal: false,
   });
+
 
   // Fetch toggle states from the backend
   useEffect(() => {
@@ -115,7 +117,8 @@ export default function Home() {
           {toggles.webArrival && <NewArrival />}                 
           {toggles.webVideo && <VideoGallery />}                
           {toggles.webProductShowCase && <ProductShowcase />}    
-          {toggles.webFeature && <FeatureProduct />}            
+          {toggles.webFeature && <FeatureProduct />} 
+          {extraSection?.sectionWeb1 && <ExtraSection1/>}           
           {toggles.webNewsLetter && <Subscription />}  
         </>
       ) : (

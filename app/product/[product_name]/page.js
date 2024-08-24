@@ -9,14 +9,13 @@ import { addToCart } from "@/lib/slices/cartSlice";
 import { openSize } from "@/lib/slices/sizeSlice";
 import { FaWhatsapp } from "react-icons/fa";
 import { PiCoatHanger } from 'react-icons/pi';
-import baseUrl from "@/components/services/baseUrl";
-
 import { openCardSlide } from "@/lib/slices/cardSlideSlice";
 import SizeChart from "@/components/sizes/page";
 import ProductCard from "@/components/productLike/page";
 import RelatedProductsSinglePage from "@/components/RelatedProducts/page";
 import ContactCard from "@/components/WishlistPhone/page";
 import parse from 'html-react-parser';
+import baseUrl from "@/components/services/baseUrl";
 
 
 const ProductDetails = () => {
@@ -27,7 +26,6 @@ const ProductDetails = () => {
   const [selectedSize, setSelectedSize] = useState("");
   const [warning, setWarning] = useState(false);
   const [activeTab, setActiveTab] = useState('description');
-
   const { product_name } = useParams();
   const searchParams = useSearchParams();
   const sku = searchParams.get("sku")
@@ -53,7 +51,7 @@ const ProductDetails = () => {
     if (sku) {
       fetchProduct();
     }
-  }, [sku]);
+  }, [product_name, sku]);
 
   const handleAddToCart = () => {
     if (selectedSize) {
@@ -358,7 +356,7 @@ const ProductDetails = () => {
           </div>
         </div>
       </div>
-      <div className="text-center  mt-0">
+      <div className="text-center  pt-6 lg:pt-12">
         <h1 className="text center">Related Products</h1>
       </div>
       <div className="lg:mx-20 grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
