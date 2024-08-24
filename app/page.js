@@ -16,6 +16,7 @@ import baseUrl from "@/components/services/baseUrl";
 
 export default function Home() {
   const dispatch = useDispatch();
+  const [extraSection, setExtraSection] = useState(null)
   const [isMobile, setIsMobile] = useState(false);
   const [toggles, setToggles] = useState({
     webFeature: false,
@@ -66,6 +67,15 @@ export default function Home() {
 
     fetchToggleStates();
   }, []);
+
+  // fetch ExtraSection Data
+  useEffect(()=>{
+    axios.get(`${baseUrl}/api/extra-section`)
+    .then(res=>{
+      console.log(res.data);
+      setExtraSection(res.data)      
+    })
+  },[])
 
   // Detect if the user is on mobile
   useEffect(() => {
