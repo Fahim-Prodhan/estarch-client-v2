@@ -120,7 +120,7 @@ export default function NavBar() {
         {!authUser ? <div className="navbar-end">
           <div className='hidden lg:block md:block'>
             <div className="group relative cursor-pointer bg-white hover:bg-white">
-              <a className="flex items-center gap-[2px] text-base font-semibold">
+              <div className="flex items-center gap-[2px] text-base font-semibold">
                 <div className="flex items-center gap-1 justify-center">
                   <CgProfile className="w-[16px]" />
                   <p className="text-xs">Log In / Sign Up</p>
@@ -128,14 +128,14 @@ export default function NavBar() {
                 <span>
                   <FaCaretDown className="transition-all duration-200 group-hover:rotate-180" />
                 </span>
-              </a>
+              </div>
               <div className="absolute z-10 bg-white right-1 hidden w-52 rounded-md h-28 p-2 text-black group-hover:block">
                 <ul className="bg-white w-52 p-5">
                   <li className="text-base hover:bg-base-100"><Link href="/login">Login</Link></li>
                   <div className="divider h-1"></div>
                   <li className="text-base hover:bg-base-100"><Link href='/register'>Register</Link></li>
                   <div className="divider h-1"></div>
-                  <li className="text-base hover:bg-base-100"><a>Order Tracking</a></li>
+                  <li className="text-base hover:bg-base-100">Order Tracking</li>
                 </ul>
               </div>
             </div>
@@ -170,7 +170,7 @@ export default function NavBar() {
                     </li>
                     <div className="divider h-1"></div>
                     <li className="text-base hover:bg-base-100">
-                      <a>Order Tracking</a>
+                      Order Tracking
                     </li>
                   </ul>
                 </div>
@@ -183,12 +183,12 @@ export default function NavBar() {
           <div className="navbar-end">
             <div className='hidden lg:block md:block'>
               <div className="group relative cursor-pointer bg-white hover:bg-white">
-                <a className="flex items-center gap-[2px] text-base font-semibold">
+                <div className="flex items-center gap-[2px] text-base font-semibold">
                   <Link href={'/user'} className="flex items-center gap-1 justify-center">
                     <CgProfile className="w-[26px] text-xl" />
                     <p className="text">My Profile</p>
                   </Link>
-                </a>
+                </div>
 
               </div>
             </div>
