@@ -5,12 +5,13 @@ import { Navigation, FreeMode, Autoplay } from 'swiper/modules';
 import axios from 'axios';
 import Link from 'next/link';
 import baseUrl from '../services/baseUrl';
-
 import './styles.css';
+import Image from 'next/image';
 
 const SellingCategory = () => {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
+    console.log(categories);
 
     useEffect(() => {
         axios.get(`${baseUrl}/api/categories/categories`)
@@ -19,14 +20,15 @@ const SellingCategory = () => {
                 setLoading(false);
             })
             .catch(() => {
-                setLoading(false); // Set loading to false even if there is an error
+                setLoading(false);
             });
     }, []);
 
-
     return (
         <div className='mx-4 md:mx-12 lg:mx-20'>
-            <h1 className='text-center mt-4 md:mt-8 lg:mt-8 font-bold md:text-2xl lg:text-2xl pb-5'>BROWSE OUR CATEGORY</h1>
+            <h1 className='text-center mt-4 md:mt-8 lg:mt-8 font-bold md:text-2xl lg:text-2xl pb-5'>
+                BROWSE OUR CATEGORY
+            </h1>
             <Swiper
                 slidesPerView={4}
                 navigation={true}
@@ -55,7 +57,7 @@ const SellingCategory = () => {
                         spaceBetween: 50,
                     },
                 }}
-                modules={[FreeMode, Navigation,Autoplay]}
+                modules={[FreeMode, Navigation, Autoplay]}
                 className="mySwiper"
             >
                 {loading ? (
@@ -68,18 +70,21 @@ const SellingCategory = () => {
                 ) : (
                     categories.map(cat => (
                         <SwiperSlide key={cat._id}>
-                            <Link href={`${cat.type.name}/${cat.name}`}>
-                                <div className='relative text-center rounded-md bg-cover bg-center w-[162px] lg:w-[302px] h-[100px] lg:h-[180px]' style={{ backgroundImage: `url(${cat.image})` }}>
-                                    {/* Overlay div */}
-                                    <div className="absolute inset-0 bg-[#1111112f] z-10 rounded-md">
-                                        {/* This div is used for an overlay on the background image */}
+                            <Link href={`${cat?.type?.name}/${cat.name}`}>
+                                <div className="relative text-center rounded-md w-[162px] lg:w-[302px] h-[100px] lg:h-[180px]">
+                                    <Image
+                                        src={`${baseUrl}/${cat.image}`}
+                                        alt={cat.name}
+                                        width={302}
+                                        height={180}
+                                        className="rounded-md object-cover"
+                                    />
+                                    <div className="absolute inset-0 lg:mt-20  bg-opacity-30 flex justify-center items-center">
+                                        <button className="bg-[#0000005e]  lg:text-lg text-white rounded-md text-[8px] border-2 py-1 px-2">
+                                            {cat.name}
+                                        </button>
                                     </div>
-                                    {/* Button on top of the overlay */}
-                                    <button className='relative text-[8px] md:text-sm top-14 lg:top-32 px-3 cursor-pointer text-white rounded-lg py-1 bg-[#00000058] z-20 border-2'>
-                                        {cat.name}
-                                    </button>
                                 </div>
-
                             </Link>
                         </SwiperSlide>
                     ))
