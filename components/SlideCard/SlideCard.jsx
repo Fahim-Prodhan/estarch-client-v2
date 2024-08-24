@@ -14,6 +14,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { RxCross2 } from "react-icons/rx";
 import { MdArrowDropDown, MdArrowDropUp } from "react-icons/md";
+import baseUrl from "../services/baseUrl";
 
 const SlideCard = () => {
   const isOpen = useSelector((state) => state.cardSlide.isOpen);
@@ -79,7 +80,7 @@ const SlideCard = () => {
                     <Image
                       width={80}
                       height={80}
-                      src={item.product.colors[0].images[0].url}
+                      src={`${baseUrl}/${item.product.colors[0].images[0].url}`}
                       alt={item.product.title}
                     />
                   )}

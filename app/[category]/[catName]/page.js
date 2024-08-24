@@ -227,7 +227,7 @@ const Page = () => {
                         </div>
                     )}
                     <Image
-                        src={product.images[0]}
+                        src={`${baseUrl}/${product.images[0]}`}
                         alt={product.productName}
                         width={500}
                         height={700}

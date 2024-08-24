@@ -11,12 +11,9 @@ import Image from 'next/image';
 import { useDispatch } from 'react-redux';
 import { openProductModal } from '@/lib/slices/productModalSlice';
 import ProductModal from '../ProductModal/page';
-
 export default function RelatedProductsSinglePage() {
   const [products, setProducts] = useState([])
   const dispatch = useDispatch();
-
-
   useEffect(() => {
     axios.get(`${baseUrl}/api/products/feature-products`)
       .then(res => {

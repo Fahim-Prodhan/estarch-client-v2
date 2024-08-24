@@ -78,7 +78,7 @@ export default function NewArrival() {
               <Link href={`/product/${product?.productName}?sku=${product?.SKU}`}>
                 <div>
                   <figure className='relative'>
-                    <Image src={product.images[0]} width={500} height={0} alt={product.productName} />
+                    <Image src={`${baseUrl}/${product.images[0]}`} width={500} height={0} alt={product.productName} />
                     <p className='absolute top-2 bg-error text-white left-2 px-2 rounded-md'>New</p>
                   </figure>
                   <div className="pt-1 px-6">

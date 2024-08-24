@@ -204,7 +204,7 @@ const FeatureAllProducts = () => {
                             >
                                 <Link href={`/product/${product?.productName}?sku=${product?.SKU}`}>
                                 <figure>
-                                    <Image src={product.images[0]} alt={product.productName} width={500}
+                                    <Image src={`${baseUrl}/${product.images[0]}`} alt={product.productName} width={500}
                                         height={700} />
                                 </figure>
                                 <div className="pt-1 lg:px-6 px-2">

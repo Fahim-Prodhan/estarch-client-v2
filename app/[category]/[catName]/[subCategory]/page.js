@@ -48,13 +48,9 @@ const Page = () => {
         { min: 2501, max: 5000 },
         { min: 5001, max: 10000 },
     ];
-
-    // Fetch products from the backend
     useEffect(() => {
         const fetchProducts = async () => {
             let url = `${baseUrl}/api/products/products/category/products/${catName}?subcategories=${encodedSubcategory}`;
-
-            // Add ranges to the query string if there are selected ranges
             if (selectedRanges.length > 0) {
                 const rangesQuery = JSON.stringify(selectedRanges);
                 const delimiter = url.includes('?') ? '&' : '?';
@@ -68,8 +64,6 @@ const Page = () => {
                 url += `${delimiter}subcategories=${encodeURIComponent(subcategoriesQuery)}`;
                 console.log(encodeURIComponent(subcategoriesQuery));
             }
-
-            // Add sizes to the query string if there are selected sizes
             if (selectedSizes.length > 0) {
                 const sizesQuery = JSON.stringify(selectedSizes);
                 const delimiter = url.includes('?') ? '&' : '?';
@@ -237,7 +231,7 @@ const Page = () => {
                                             </div>
                                         )}
                                         <Image
-                                            src={product.images[0]}
+                                            src={`${baseUrl}/${product.images[0]}`}
                                             alt={product.productName}
                                             width={500}
                                             height={700}
