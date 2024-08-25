@@ -3,12 +3,13 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import baseUrl from '@/components/services/baseUrl';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 const NewOrder = () => {
     const [orders, setOrders] = useState([]);
     const [userId, setUserId] = useState(null);
     const [loading, setLoading] = useState(true);
-
+    const router = useRouter();
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const storedUserId = JSON.parse(localStorage.getItem('userId'));
@@ -55,7 +56,7 @@ const NewOrder = () => {
     return (
         <div className=' rounded-md shadow-md'>
             {orders.length > 0 ? (
-                <div className='grid grid-cols-2 gap-5 mt-4'>
+                <div className='grid lg:grid-cols-2 gap-5 mt-4'>
                     {orders.map(order => (
                         <div key={order._id} className='flex flex-row-reverse gap-5 border p-4 rounded-md shadow-sm'>
                             <div>
@@ -72,8 +73,11 @@ const NewOrder = () => {
                                 <p><strong>Payment Method:</strong> {order.paymentMethod}</p>
                                 <p><strong>Status:</strong> {order.lastStatus.name}</p>
                              
-                                <button className='btn bg-black text-white'>Tracking Order</button>
-                                <button className='btn ml-2 bg-black text-white'>Invoice</button>
+                                <div className='flex flex-col lg:flex-row gap-2 mt-2'>
+                                <button  onClick={() => router.push(`/invoice/${order._id}`)} className='btn  bg-black text-white'>Invoice</button>
+                                <button className='btn   bg-black text-white'>Tracking Order</button>
+                              
+                               </div>
                               
                             </div>
                             <div className=''>
