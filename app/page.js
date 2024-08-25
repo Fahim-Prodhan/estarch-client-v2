@@ -14,6 +14,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import baseUrl from "@/components/services/baseUrl";
 import ExtraSection1 from "@/components/extraSection1/ExtraSection1";
+import ExtraSection2 from "@/components/extraSection2/ExtraSection2";
+import ExtraSection3 from "@/components/extraSection3/ExtraSection3";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -92,6 +94,8 @@ export default function Home() {
           {toggles.webProductShowCase && <ProductShowcase />}    
           {toggles.webFeature && <FeatureProduct />} 
           {extraSection?.sectionWeb1 && <ExtraSection1/>}           
+          {extraSection?.sectionWeb2 && <ExtraSection2/>}           
+          {extraSection?.sectionWeb3 && <ExtraSection3/>}           
           {toggles.webNewsLetter && <Subscription />}  
         </>
       ) : (
@@ -101,6 +105,9 @@ export default function Home() {
           {toggles.mobileVideo && <VideoGallery />}
           {toggles.mobileProductShowCase && <ProductShowcase />}
           {toggles.mobileFeature && <FeatureProduct />}
+          {extraSection?.sectionMobile1 && <ExtraSection1/>}           
+          {extraSection?.sectionMobile2 && <ExtraSection2/>}           
+          {extraSection?.sectionMobile3 && <ExtraSection3/>}  
           {toggles.mobileNewsLetter && <Subscription />}
         </>
       )}

@@ -12,7 +12,7 @@ import baseUrl from '../services/baseUrl';
 import { useDispatch } from 'react-redux';
 import ProductModal from '../ProductModal/page';
 import { openProductModal } from '@/lib/slices/productModalSlice';
-export default function ExtraSection1() {
+export default function ExtraSection2() {
 
 
     const dispatch = useDispatch();
@@ -57,7 +57,6 @@ export default function ExtraSection1() {
     const [extraSection, setExtraSection] = useState(null)
     const [typeName, setTypeName] = useState(null)
     const [categoryName, setCategoryName] = useState(null)
-    console.log(categoryName);
 
 
     useEffect(() => {
@@ -67,20 +66,18 @@ export default function ExtraSection1() {
                 console.log(res.data);
                 setExtraSection(res.data)
             })
-
-
-    }, [extraSection?.type1])
+    }, [extraSection?.type2])
 
     useEffect(() => {
-        if (extraSection?.type1 === 'Category') {
-            axios.get(`${baseUrl}/api/products/products/category/products/${encodeURIComponent(extraSection?.name1)}`)
+        if (extraSection?.type2 === 'Category') {
+            axios.get(`${baseUrl}/api/products/products/category/products/${encodeURIComponent(extraSection?.name2)}`)
                 .then(res => {
                     setProducts(res.data)
                 })
             console.log("Category");
 
-        } else if (extraSection?.type1 === 'Subcategory') {
-            axios.get(`${baseUrl}/api/products/products/subcategory/${encodeURIComponent(extraSection?.name1)}`)
+        } else if (extraSection?.type2 === 'Subcategory') {
+            axios.get(`${baseUrl}/api/products/products/subcategory/${encodeURIComponent(extraSection?.name2)}`)
                 .then(res => {
                     setProducts(res.data.products)
                     setCategoryName(res.data.subcategory?.category?.name)
@@ -94,19 +91,19 @@ export default function ExtraSection1() {
             console.log("Not accepted");
 
         }
-    }, [extraSection?.name1, extraSection?.type1])
+    }, [extraSection?.name2, extraSection?.type2])
 
 
     return (
         <div>
             <div className="slider-container mx-0 lg:mx-20">
-                <h1 className='text-center mt-8 font-bold md:text-2xl lg:text-2xl text-lg uppercase'>{extraSection?.name1} Section</h1>
+                <h1 className='text-center mt-8 font-bold md:text-2xl lg:text-2xl text-lg uppercase'>{extraSection?.name2} Section</h1>
                 <div className='text-center mb-4'>
                     {
-                        extraSection?.type1 === "Category" ?
-                            <Link className='lg:text-xl font-normal text-orange-500' href={`/${products[0]?.selectedType}/${extraSection?.name1}`}>View All</Link>
+                        extraSection?.type2 === "Category" ?
+                            <Link className='lg:text-xl font-normal text-orange-500' href={`/${products[0]?.selectedType}/${extraSection?.name2}`}>View All</Link>
                             :
-                            <Link className='lg:text-xl font-normal text-orange-500' href={`/${typeName}/${categoryName}/${extraSection?.name1}`}>View All</Link>
+                            <Link className='lg:text-xl font-normal text-orange-500' href={`/${typeName}/${categoryName}/${extraSection?.name2}`}>View All</Link>
                     }
                 </div>
                 <Slider {...settings}>
