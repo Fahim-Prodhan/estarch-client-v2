@@ -49,38 +49,47 @@ const NewOrder = () => {
     }, [userId]);
 
     if (loading) {
-        return <p>Loading...</p>; 
+        return <p>Loading...</p>;
     }
 
     return (
-        <div className='p-4 bg-white rounded-md shadow-md'>
-            <h2 className='text-xl font-bold text-[#EB5B00]'>New Orders</h2>
+        <div className=' rounded-md shadow-md'>
             {orders.length > 0 ? (
-                <div className='mt-4 space-y-4'>
+                <div className='grid grid-cols-2 gap-5 mt-4'>
                     {orders.map(order => (
-                        <div key={order._id} className='border p-4 rounded-md shadow-sm'>
-                            <h3 className='font-semibold text-lg'>Invoice: {order.invoice}</h3>
-                            <p><strong>Total Amount:</strong> ${order.totalAmount}</p>
-                            <p><strong>Grand Total:</strong> ${order.grandTotal}</p>
-                            <p><strong>Payment Method:</strong> {order.paymentMethod}</p>
-                            <p><strong>Status:</strong> {order.lastStatus.name}</p>
-                            <div className='mt-2'>
-                                <h4 className='font-semibold'>Items:</h4>
-                                <ul className='list-disc pl-5'>
+                        <div key={order._id} className='flex flex-row-reverse gap-5 border p-4 rounded-md shadow-sm'>
+                            <div>
+                                <h3 className='font-semibold text-lg'>Invoice: {order.invoice}</h3>
+                               
+                                    {order.cartItems.map(i => <p key={i._id}>
+                                        <p>{i.title} - {i.quantity} x ${i.price} (Size: {i.size})</p>
+                                        <p><strong>Selling Price:</strong> ${(i.price *i.quantity) + (i.discountAmount*i.quantity)}</p>
+                                        <p><strong>Discount:</strong> ${i.discountAmount *i.quantity}</p>
+                                </p>)}
+                               
+                                <p><strong>Total Amount:</strong> ${order.totalAmount}</p>
+                                <p><strong>Grand Total:</strong> ${order.grandTotal}</p>
+                                <p><strong>Payment Method:</strong> {order.paymentMethod}</p>
+                                <p><strong>Status:</strong> {order.lastStatus.name}</p>
+                             
+                                <button className='btn bg-black text-white'>Tracking Order</button>
+                                <button className='btn ml-2 bg-black text-white'>Invoice</button>
+                              
+                            </div>
+                            <div className=''>
+            
+                                <ul className=''>
                                     {order.cartItems.map(item => (
-                                        <li key={item._id} className='flex items-center space-x-4'>
+                                        <li key={item._id} className=' items-center space-x-4'>
                                             {/* Display the first product image */}
                                             {item.product?.images?.[0] && (
                                                 <Image
                                                     src={`${baseUrl}/${item.product.images[0]}`} // Assuming the image path is relative
                                                     alt={item.product.productName}
-                                                    width={50} height={50}
+                                                    width={220} height={60}
                                                 />
                                             )}
-                                            <div>
-                                                <p>{item.product?.productName} - {item.quantity} x ${item.price} (Size: {item.size})</p>
-                                                <p className='text-sm text-gray-500'>Discount: ${item.discountAmount}</p>
-                                            </div>
+                                           
                                         </li>
                                     ))}
                                 </ul>
