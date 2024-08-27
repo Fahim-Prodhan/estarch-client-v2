@@ -56,12 +56,12 @@ export default function HeaderBanner() {
                     <Image
                       className="overflow-hidden md:max-h-[600px]"
                       src={`${baseUrl}/${carousel.images[0]}`}
-                      alt={`${baseUrl}/${carousel.images[0]}`}
+                      alt={`Carousel Image ${index + 1}`}
                       width={1200}
                       height={600}
-                      layout="responsive"
-                      objectFit="cover"
-                      priority
+                      sizes='(max-width: 640px) 100vw, (max-width: 768px) 70vw, (max-width: 1024px) 100vw, 100vw'
+                     
+                      loading={index === 0 ? 'eager' : 'lazy'}  // Eager load the first image, lazy load the rest
                     />
                   </Link>
                 </SwiperSlide>

@@ -29,8 +29,6 @@ const Page = () => {
 
     const decodeCategoryName = decodeURIComponent(catName)
 
-    console.log(decodeCategoryName);
-
     const allRanges = [
         { min: 100, max: 300 },
         { min: 301, max: 500 },
@@ -56,8 +54,7 @@ const Page = () => {
                 const subcategoriesQuery = JSON.stringify(selectedSubcategories);
                 const delimiter = url.includes('?') ? '&' : '?';
                 url += `${delimiter}subcategories=${encodeURIComponent(subcategoriesQuery)}`;
-                console.log(encodeURIComponent(subcategoriesQuery));
-
+               
             }
 
             // Add sizes to the query string if there are selected sizes
@@ -87,8 +84,6 @@ const Page = () => {
                 console.error("Error fetching subcategories:", error);
             }
         };
-
-        console.log(subcategories);
 
         axios.get(`${baseUrl}/api/categories/find/${products[0]?.selectedCategory}`)
             .then(res => {

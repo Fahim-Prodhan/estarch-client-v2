@@ -27,7 +27,7 @@ const VideoGallery = () => {
   };
 
   return (
-    <div className="flex flex-col items-center space-y-8 md:flex-row md:space-x-4 md:space-y-0 lg:mx-20 mt-10">
+    <div className="flex flex-col items-center md:flex-row md:space-x-4 md:space-y-0 lg:mx-20 mt-10">
       {videos.length === 0 ? (
         <p>No videos available</p>
       ) : (

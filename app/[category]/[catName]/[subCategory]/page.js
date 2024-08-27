@@ -62,7 +62,6 @@ const Page = () => {
                 const subcategoriesQuery = JSON.stringify(selectedSubcategories);
                 const delimiter = url.includes('?') ? '&' : '?';
                 url += `${delimiter}subcategories=${encodeURIComponent(subcategoriesQuery)}`;
-                console.log(encodeURIComponent(subcategoriesQuery));
             }
             if (selectedSizes.length > 0) {
                 const sizesQuery = JSON.stringify(selectedSizes);

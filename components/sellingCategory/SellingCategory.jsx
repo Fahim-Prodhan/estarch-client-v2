@@ -11,7 +11,6 @@ import Image from 'next/image';
 const SellingCategory = () => {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
-    console.log(categories);
 
     useEffect(() => {
         axios.get(`${baseUrl}/api/categories/categories`)
@@ -57,7 +56,7 @@ const SellingCategory = () => {
                         spaceBetween: 50,
                     },
                 }}
-                modules={[FreeMode, Navigation, Autoplay]}
+                modules={[FreeMode, Navigation]}
                 className="mySwiper"
             >
                 {loading ? (
@@ -75,14 +74,17 @@ const SellingCategory = () => {
                                     <Image
                                         src={`${baseUrl}/${cat.image}`}
                                         alt={cat.name}
-                                        width={302}
+                                        width={500}
                                         height={180}
+                                        sizes='(max-width: 640px) 30vw, (max-width: 768px) 50vw, (max-width: 1024px) 800vw, 100vw'
                                         className="rounded-md object-cover"
                                     />
-                                    <div className="absolute inset-0 lg:mt-20  bg-opacity-30 flex justify-center items-center">
-                                        <button className="bg-[#0000005e]  lg:text-lg text-white rounded-md text-[8px] border-2 py-1 px-2">
+                                    <div className="absolute z-10 mt-12 inset-0 lg:mt-20  bg-opacity-30 flex justify-center items-center">
+                                        <button className="bg-[#0000005e]  lg:text-sm text-white rounded-md text-[8px] border-2 py-1 px-2">
                                             {cat.name}
                                         </button>
+                                    </div>
+                                    <div className="absolute rounded-lg inset-0 bg-black bg-opacity-30 flex flex-col justify-center items-center text-white">
                                     </div>
                                 </div>
                             </Link>

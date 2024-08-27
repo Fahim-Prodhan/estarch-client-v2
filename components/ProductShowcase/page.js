@@ -27,11 +27,12 @@ const ProductShowcase = () => {
           <div key={index} className="relative w-full">
             <Link href={item.link || '#'}>
               <Image
-                width={300}
-                height={300}
+                width={400}
+                height={0}
                 src={item.images[0] ? `${baseUrl}/${item.images[0]}` : '/fallback-image.jpg'} // Use baseUrl here to ensure it's a valid URL
                 alt={item.name}
                 className="w-full h-auto"
+                sizes='(max-width: 640px) 55vw, (max-width: 768px) 50vw, (max-width: 1024px) 800vw, 100vw'
               />
               <div className="absolute inset-0 flex items-end mb-5 justify-center text-white text-sm font-semibold">
                 <p className="font-semibold bg-black bg-opacity-50 px-4 py-2 rounded">

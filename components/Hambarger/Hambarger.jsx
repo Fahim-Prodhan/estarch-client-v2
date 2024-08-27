@@ -39,7 +39,6 @@ function Hambarger() {
                 // Automatically open all types initially
                 setOpenTypes(Object.keys(groupedCategories));
 
-                console.log(groupedCategories);
 
             } catch (error) {
                 console.error('Error fetching categories:', error);

@@ -11,22 +11,22 @@ const ContactCard = () => {
                 <span className="text-gray-500 text-sm font-semibold">ADD TO WISHLIST</span>
             </div>
             <div className='mt-5'>
-            <a href="tel:01781813939">
+            <Link href="tel:01781813939">
         <Image src={call} width={300} height={20} alt='Call' />
-      </a>
+      </Link>
             </div>
             <div className='flex flex-row  items-center gap-3'>
                 <div className="text-sm mt-2">Share To:</div>
                 <div className="flex justify-center mt-4">
-                    <a href="https://www.facebook.com/Estarch.com.bd" className="text-blue-700 mx-2 hover:text-blue-900">
+                    <Link href="https://www.facebook.com/Estarch.com.bd" className="text-blue-700 mx-2 hover:text-blue-900">
                         <FaFacebookF size={20} />
-                    </a>
-                    <a href="https://wa.me/+8801781813939" className="text-green-500 mx-2 hover:text-green-700">
+                    </Link>
+                    <Link href="https://wa.me/+8801781813939" className="text-green-500 mx-2 hover:text-green-700">
                         <FaWhatsapp size={20} />
-                    </a>
-                    <a href="https://m.me/estarch.com.bd" className="text-blue-500 mx-2 hover:text-blue-700">
+                    </Link>
+                    <Link href="https://m.me/estarch.com.bd" className="text-blue-500 mx-2 hover:text-blue-700">
                         <FaFacebookMessenger size={20} />
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>

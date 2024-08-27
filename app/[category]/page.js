@@ -48,7 +48,7 @@ export default function Man() {
                                 alt={cat.name}
                                 className="rounded-lg"
                             />
-                            <div className="absolute inset-0 bg-black bg-opacity-30 flex flex-col justify-center items-center text-white">
+                            <div className="absolute rounded-lg inset-0 bg-black bg-opacity-30 flex flex-col justify-center items-center text-white">
                                 <h2 className="bg-[#0000005e] lg:text-lg rounded-md  text-[8px] border-2 py-1 px-2">{cat.name}</h2>
                             
                             </div>

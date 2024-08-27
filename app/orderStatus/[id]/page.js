@@ -21,7 +21,6 @@ export default function OrderStatus() {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
-        console.log(data);
 
         setOrder(data);
         setLoading(false);
@@ -125,12 +124,12 @@ export default function OrderStatus() {
               Shopping Again
             </button>
           </Link>
-          <a >
+          <p className='cursor-pointer'>
             <button onClick={handleShare} className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition">
               💬 MESSAGE US
             </button>
 
-          </a>
+          </p>
         </div>
       </div>
     </div>

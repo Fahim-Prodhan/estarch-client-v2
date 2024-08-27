@@ -62,7 +62,6 @@ export default function Home() {
   useEffect(()=>{
     axios.get(`${baseUrl}/api/extra-section`)
     .then(res=>{
-      console.log(res.data);
       setExtraSection(res.data)      
     })
   },[])
