@@ -6,7 +6,6 @@ import { CiFilter } from "react-icons/ci";
 import { useParams } from "next/navigation";
 import baseUrl from "@/components/services/baseUrl";
 import axios from "axios";
-import { FaCircleArrowDown } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import { openProductModal } from "@/lib/slices/productModalSlice";
 import ProductModal from "../ProductModal/page";
@@ -18,7 +17,7 @@ const NewArrivalAllProducts = () => {
     const [selectedSubcategories, setSelectedSubcategories] = useState([]);
     const [uniqueSizes, setUniqueSizes] = useState([]);
     const [selectedSizes, setSelectedSizes] = useState([]);
-    const [sortBy, setSortBy] = useState('Sort by Latest');
+    const [sortBy, setSortBy] = useState('Sort by Serial');
     const [index, setIndex] = useState(20)
     const dispatch = useDispatch();
 
@@ -35,7 +34,7 @@ const NewArrivalAllProducts = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             let url = `${baseUrl}/api/products/new-all-products`;
-
+          
             // Add ranges to the query string if there are selected ranges
             if (selectedRanges.length > 0) {
                 const rangesQuery = JSON.stringify(selectedRanges);
@@ -145,16 +144,17 @@ const NewArrivalAllProducts = () => {
                             <Link className="uppercase" href={'/'}>Home</Link>
                         </li>
                         <li>
-                            <Link href={`/feature-products`} className="uppercase font-bold">New Arrival</Link>
+                            <Link href={`/new-arrival`} className="uppercase font-bold">New Arrival</Link>
                         </li>
                     </ul>
                 </div>
                 <label className="form-control w-full max-w-[30%] md:max-w-[10%] lg:flex hidden">
                     <select className="select select-bordered select-sm" value={sortBy} onChange={handleSortChange}>
                         <option disabled>Sort By</option>
+                        <option>Sort by Serial</option>
+                        <option>Sort by Latest</option>
                         <option>Price High to Low</option>
                         <option>Price Low to High</option>
-                        <option>Sort by Latest</option>
                     </select>
                 </label>
             </div>
@@ -185,9 +185,10 @@ const NewArrivalAllProducts = () => {
                 <label className="form-control w-full max-w-[40%] md:max-w-[15%] flex lg:hidden">
                     <select className="select select-bordered select-sm" value={sortBy} onChange={handleSortChange}>
                         <option disabled>Sort By</option>
+                        <option>Sort by Serial</option>
+                        <option>Sort by Latest</option>
                         <option>Price High to Low</option>
                         <option>Price Low to High</option>
-                        <option>Sort by Latest</option>
                     </select>
                 </label>
             </div>
@@ -200,21 +201,21 @@ const NewArrivalAllProducts = () => {
                         {products.slice(0, index).map((product) => (
                             <div
                                 key={product._id}
-                                className="card card-compact bg-base-200 shadow-lg rounded-none h-[350px] md:h-[500px] relative"
+                                className="card card-compact bg-base-200 shadow-lg rounded-none h-[340px] md:h-[490px] relative border-2 border-base-200 hover:border-blue-300"
                             >
                                 <Link href={`/product/${product?.productName}?sku=${product?.SKU}`}>
                                 <figure>
-                                    <Image sizes="30vw" src={`${baseUrl}/${product.images[0]}`} alt={product.productName} width={500}
-                                        height={500} />
+                                    <Image sizes="30vw" src={`${baseUrl}/${product.images[0]}`} alt={product.productName} width={350}
+                                        height={400} />
                                 </figure>
                                 <div className="pt-1 lg:px-6 px-2">
-                                    <h2 className="md:text-[18px] text-[14px] font-bold text-center">
+                                    <h2 className="md:text-[17px] text-[14px] font-bold text-center">
                                         {product.productName.length > 25
                                             ? `${product.productName.slice(0, 25)}...`
                                             : product.productName
                                         }</h2>
                                     <div className='text-center'>
-                                        <div className="absolute bottom-10 md:bottom-10 left-6 md:left-16">
+                                        <div className="absolute bottom-8 md:bottom-10 left-8 md:left-[85px]">
                                             <p className={`bg-black text-white text-sm md:text-[16px] mt-2 w-full mx-auto  px-2 ${product.regularPrice - product.salePrice > 0 ? 'visible' : 'invisible'}`}>
                                                 Save Tk. {product.regularPrice - product.salePrice}
                                             </p>
@@ -229,7 +230,7 @@ const NewArrivalAllProducts = () => {
                                         </div>
 
                                         {product.regularPrice - product.salePrice <= 0 && (
-                                            <p className='my-1 text-[17px] md:text-[20px] text-black text-center absolute bottom-10 md:bottom-10 left-12 md:left-24'>
+                                            <p className='my-1 text-[17px] md:text-[20px] text-black text-center absolute bottom-8 md:bottom-10 left-14 md:left-[110px]'>
                                                 <span className=''>TK.</span>{product.salePrice}
                                             </p>
                                         )}

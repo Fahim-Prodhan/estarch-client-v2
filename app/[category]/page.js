@@ -9,6 +9,7 @@ export default function Man() {
 
     const [categories, setCategories] = useState([])
     const { category } = useParams();
+    
 
 
     useEffect(() => {
@@ -28,12 +29,11 @@ export default function Man() {
                         alt="Main image"
                         layout="fill"
                         objectFit="cover"
-                        className="opacity-80"
+                        className="opacity-100"
                     />
                 </div>
-                <div className="absolute inset-0 bg-black bg-opacity-30 flex flex-col justify-center items-center text-white">
+                <div className="absolute inset-0 bg-black bg-opacity-0 flex flex-col justify-center items-center text-white">
                     <div className="absolute text-center">
-                        <h1 className="text-3xl lg:text-5xl md:text-5xl font-bold text-white uppercase ">{category}</h1>
                     </div>
                 </div>
             </div>

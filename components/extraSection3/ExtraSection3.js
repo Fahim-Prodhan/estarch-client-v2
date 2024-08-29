@@ -132,9 +132,9 @@ export default function ExtraSection3() {
                 <div className='text-center mb-4'>
                     {
                         extraSection?.type3 === "Category" ?
-                            <Link className='lg:text-xl font-normal text-orange-500' href={`/${products[0]?.selectedType}/${extraSection?.name2}`}>View All</Link>
+                            <Link className='lg:text-xl font-normal text-orange-500' href={`/${products[0]?.selectedType}/${extraSection?.name3}`}>View All</Link>
                             :
-                            <Link className='lg:text-xl font-normal text-orange-500' href={`/${typeName}/${categoryName}/${extraSection?.name2}`}>View All</Link>
+                            <Link className='lg:text-xl font-normal text-orange-500' href={`/${typeName}/${categoryName}/${extraSection?.name3}`}>View All</Link>
                     }
                 </div>
                 <Slider {...settings}>
