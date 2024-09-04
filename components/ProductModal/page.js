@@ -56,7 +56,7 @@ const ProductModal = () => {
   const buyNowButton = () => {
     if (selectedSize) {
       dispatch(closeProductModal())
-      router.push(`/product/order/${selectedProduct._id}/${selectedSize}`);
+      router.push(`/product/order/${selectedProduct._id}/${selectedSize}?q=1`);
     } else {
       setWarning(true)
     }

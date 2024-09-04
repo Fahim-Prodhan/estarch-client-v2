@@ -89,24 +89,24 @@ export default function Home() {
         <>
           {toggles.webSellingCategory && <SellingCategory />}    
           {toggles.webArrival && <NewArrival />}                 
-          {toggles.webVideo && <VideoGallery />}                
-          {toggles.webProductShowCase && <ProductShowcase />}    
-          {toggles.webFeature && <FeatureProduct />} 
           {extraSection?.sectionWeb1 && <ExtraSection1/>}           
           {extraSection?.sectionWeb2 && <ExtraSection2/>}           
           {extraSection?.sectionWeb3 && <ExtraSection3/>}           
+          {toggles.webVideo && <VideoGallery />}                
+          {toggles.webProductShowCase && <ProductShowcase />}    
+          {toggles.webFeature && <FeatureProduct />} 
           {toggles.webNewsLetter && <Subscription />}  
         </>
       ) : (
         <>
           {toggles.mobileSellingCategory && <SellingCategory />}
           {toggles.mobileArrival && <NewArrival />}
-          {toggles.mobileVideo && <VideoGallery />}
-          {toggles.mobileProductShowCase && <ProductShowcase />}
-          {toggles.mobileFeature && <FeatureProduct />}
           {extraSection?.sectionMobile1 && <ExtraSection1/>}           
           {extraSection?.sectionMobile2 && <ExtraSection2/>}           
           {extraSection?.sectionMobile3 && <ExtraSection3/>}  
+          {toggles.mobileVideo && <VideoGallery />}
+          {toggles.mobileProductShowCase && <ProductShowcase />}
+          {toggles.mobileFeature && <FeatureProduct />}
           {toggles.mobileNewsLetter && <Subscription />}
         </>
       )}
