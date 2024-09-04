@@ -11,6 +11,7 @@ import bank_payment_logo from "../../public/images/payment-gateway.eb02d190.png"
 import pic from '../../public/images/1707379719303-manfare_bd-id-13.jpeg';
 import logo from '../../public/images/Logo Png 51.png';
 import footer from '../../public/images/footer.jpg'
+import Link from 'next/link';
 export default function Footer() {
   return (
     <div
@@ -40,7 +41,7 @@ export default function Footer() {
 
             <p className="text-white mt-2"> SUN - SAT, 10:30 AM - 10 PM</p>
             <div className="flex flex-row gap-3 mt-4">
-            <a href='https://wa.me/01781813939'>
+            <Link href='https://wa.me/01781813939'>
               <div
                 className="border rounded-full h-10 w-10 px-2 py-1 flex justify-center items-center"
                 style={{ borderColor: "rgb(184, 149, 121)" }}
@@ -56,8 +57,8 @@ export default function Footer() {
                 />
               
                 </div>
-              </a>
-              <a href='https://www.instagram.com/estarch.com.bd'>
+              </Link>
+              <Link href='https://www.instagram.com/estarch.com.bd'>
               <div
                 className="border rounded-full h-10 w-10 px-2 py-1 flex justify-center items-center"
                 style={{ borderColor: "rgb(184, 149, 121)" }}
@@ -71,8 +72,8 @@ export default function Footer() {
                   icon={faInstagram}
                 />
               </div>
-              </a>
-              <a href='https://www.facebook.com/Estarch.com.bd '>
+              </Link>
+              <Link href='https://www.facebook.com/Estarch.com.bd '>
               <div
                 className="border rounded-full h-10 w-10 py-1 p-2 flex justify-center items-center"
                 style={{ borderColor: "rgb(184, 149, 121)" }}
@@ -85,8 +86,8 @@ export default function Footer() {
                   icon={faFacebook}
                 />
                 </div>
-              </a>
-              <a href='https://m.me/estarch.com.bd'>
+              </Link>
+              <Link href='https://m.me/estarch.com.bd'>
               <div
                 className="border rounded-full h-10 w-10 px-2 py-1 flex justify-center items-center"
                 style={{ borderColor: "rgb(184, 149, 121)" }}
@@ -100,7 +101,7 @@ export default function Footer() {
                   icon={faFacebookMessenger}
                 />
                 </div>
-                </a>
+                </Link>
             </div>
           </div>
           <nav className="mb-4 lg:mb-0 lg:w-1/3 w-full items-center flex flex-col justify-center text-center">

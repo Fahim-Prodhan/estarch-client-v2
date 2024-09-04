@@ -49,29 +49,33 @@ const Page = () => {
         { min: 5001, max: 10000 },
     ];
     useEffect(() => {
+        // Extract complex expressions into variables
+        const selectedCategory = products[0]?.selectedCategory;
+    
         const fetchProducts = async () => {
             let url = `${baseUrl}/api/products/products/category/products/${catName}?subcategories=${encodedSubcategory}`;
+    
+            // Add ranges to the query string if there are selected ranges
             if (selectedRanges.length > 0) {
                 const rangesQuery = JSON.stringify(selectedRanges);
-                const delimiter = url.includes('?') ? '&' : '?';
-                url += `${delimiter}ranges=${encodeURIComponent(rangesQuery)}`;
+                url += `${url.includes('?') ? '&' : '?'}ranges=${encodeURIComponent(rangesQuery)}`;
             }
-
+    
             // Add subcategories to the query string if there are selected subcategories
             if (selectedSubcategories.length > 0) {
                 const subcategoriesQuery = JSON.stringify(selectedSubcategories);
-                const delimiter = url.includes('?') ? '&' : '?';
-                url += `${delimiter}subcategories=${encodeURIComponent(subcategoriesQuery)}`;
-                console.log(encodeURIComponent(subcategoriesQuery));
+                url += `${url.includes('?') ? '&' : '?'}subcategories=${encodeURIComponent(subcategoriesQuery)}`;
             }
+    
+            // Add sizes to the query string if there are selected sizes
             if (selectedSizes.length > 0) {
                 const sizesQuery = JSON.stringify(selectedSizes);
-                const delimiter = url.includes('?') ? '&' : '?';
-                url += `${delimiter}sizes=${encodeURIComponent(sizesQuery)}`;
+                url += `${url.includes('?') ? '&' : '?'}sizes=${encodeURIComponent(sizesQuery)}`;
             }
-            const delimiter = url.includes('?') ? '&' : '?';
-            url += `${delimiter}sortBy=${encodeURIComponent(sortBy)}`;
-
+    
+            // Add sortBy to the query string
+            url += `${url.includes('?') ? '&' : '?'}sortBy=${encodeURIComponent(sortBy)}`;
+    
             try {
                 const response = await fetch(url);
                 const data = await response.json();
@@ -81,25 +85,34 @@ const Page = () => {
                 console.error("Error fetching products:", error);
             }
         };
-
+    
         const fetchSubcategories = async () => {
-            try {
-                const response = await axios.get(`${baseUrl}/api/categories/subcategories/${products[0]?.selectedCategory}`);
-                setSubcategories(response.data);
-            } catch (error) {
-                console.error("Error fetching subcategories:", error);
+            if (selectedCategory) {
+                try {
+                    const response = await axios.get(`${baseUrl}/api/categories/subcategories/${selectedCategory}`);
+                    setSubcategories(response.data);
+                } catch (error) {
+                    console.error("Error fetching subcategories:", error);
+                }
             }
         };
-
-        axios.get(`${baseUrl}/api/categories/find/${products[0]?.selectedCategory}`)
-            .then(res => {
-                setCategoryName(res.data.name);
-            })
-
+    
+        const fetchCategoryName = async () => {
+            if (selectedCategory) {
+                try {
+                    const response = await axios.get(`${baseUrl}/api/categories/find/${selectedCategory}`);
+                    setCategoryName(response.data.name);
+                } catch (error) {
+                    console.error("Error fetching category name:", error);
+                }
+            }
+        };
+    
+        fetchCategoryName();
         fetchSubcategories();
         fetchProducts();
-    }, [products[0]?.selectedCategory, selectedRanges, selectedSubcategories, selectedSizes, sortBy]);
-
+    }, [catName, encodedSubcategory, selectedRanges, selectedSubcategories, selectedSizes, sortBy]);
+    
     // Sort
     const handleSortChange = (e) => {
         setSortBy(e.target.value);

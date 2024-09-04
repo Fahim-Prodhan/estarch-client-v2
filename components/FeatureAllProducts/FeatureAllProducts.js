@@ -133,7 +133,22 @@ const FeatureAllProducts = () => {
         setUniqueSizes(Array.from(sizes));
     };
 
+    const [imageWidth, setImageWidth] = useState(100); // Default width for mobile
 
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth >= 1024) { // Large screen breakpoint
+                setImageWidth(300); // Large screen width
+            } else {
+                setImageWidth(100); // Mobile width
+            }
+        };
+
+        handleResize(); // Set initial width
+        window.addEventListener('resize', handleResize); // Update on window resize
+
+        return () => window.removeEventListener('resize', handleResize); // Cleanup
+    }, []);
 
     return (
         <div className="mx-4 lg:mx-12 mt-5 mb-8">
@@ -159,8 +174,8 @@ const FeatureAllProducts = () => {
                 </label>
             </div>
 
-           {/* filter button */}
-           <div className="flex gap-3">
+            {/* filter button */}
+            <div className="flex gap-3">
                 <label
                     htmlFor="my-drawer-2"
                     className="btn btn-sm drawer-button lg:hidden mb-4"
@@ -203,49 +218,56 @@ const FeatureAllProducts = () => {
                                 className="card card-compact bg-base-200 shadow-lg rounded-none h-[350px] md:h-[500px] relative"
                             >
                                 <Link href={`/product/${product?.productName}?sku=${product?.SKU}`}>
-                                <figure>
-                                    <Image src={`${baseUrl}/${product.images[0]}`} alt={product.productName} width={500}
-                                        height={700} />
-                                </figure>
-                                <div className="pt-1 lg:px-6 px-2">
-                                    <h2 className="md:text-[18px] text-[14px] font-bold text-center">
-                                        {product.productName.length > 25
-                                            ? `${product.productName.slice(0, 25)}...`
-                                            : product.productName
-                                        }</h2>
-                                    <div className='text-center'>
-                                        <div className="absolute bottom-10 md:bottom-10 left-6 md:left-16">
-                                            <p className={`bg-black text-white text-sm md:text-[16px] mt-2 w-full mx-auto  px-2 ${product.regularPrice - product.salePrice > 0 ? 'visible' : 'invisible'}`}>
-                                                Save Tk. {product.regularPrice - product.salePrice}
-                                            </p>
-                                            {
-                                                product.regularPrice - product.salePrice > 0 && (
-                                                    <p className='my-1 text-[16px] md:text-[20px] text-black text-center '>
-                                                        <span>TK.</span>{product.salePrice}
-                                                        <span className='md:text-[17px] text-sm line-through text-red-500'> Tk.{product.regularPrice}</span>
-                                                    </p>
-                                                )
-                                            } 
-                                        </div>
+                                    <figure>
+                                        <Image
+                                            className="w-[300px]" // You can adjust or remove this class
+                                            src={`${baseUrl}/${product.images[0]}`}
+                                            alt={product.productName}
+                                            width={imageWidth}
+                                            height={150} // Adjust the height as needed
+                                            priority={true}
+                                            quality={75}
+                                        />
+                                    </figure>
+                                    <div className="pt-1 lg:px-6 px-2">
+                                        <h2 className="md:text-[18px] text-[14px] font-bold text-center">
+                                            {product.productName.length > 25
+                                                ? `${product.productName.slice(0, 25)}...`
+                                                : product.productName
+                                            }</h2>
+                                        <div className='text-center'>
+                                            <div className="absolute bottom-10 md:bottom-10 left-6 md:left-16">
+                                                <p className={`bg-black text-white text-sm md:text-[16px] mt-2 w-full mx-auto  px-2 ${product.regularPrice - product.salePrice > 0 ? 'visible' : 'invisible'}`}>
+                                                    Save Tk. {product.regularPrice - product.salePrice}
+                                                </p>
+                                                {
+                                                    product.regularPrice - product.salePrice > 0 && (
+                                                        <p className='my-1 text-[16px] md:text-[20px] text-black text-center '>
+                                                            <span>TK.</span>{product.salePrice}
+                                                            <span className='md:text-[17px] text-sm line-through text-red-500'> Tk.{product.regularPrice}</span>
+                                                        </p>
+                                                    )
+                                                }
+                                            </div>
 
-                                        {product.regularPrice - product.salePrice <= 0 && (
-                                            <p className='my-1 text-[17px] md:text-[20px] text-black text-center absolute bottom-10 md:bottom-10 left-12 md:left-24'>
-                                                <span className=''>TK.</span>{product.salePrice}
-                                            </p>
-                                        )}
+                                            {product.regularPrice - product.salePrice <= 0 && (
+                                                <p className='my-1 text-[17px] md:text-[20px] text-black text-center absolute bottom-10 md:bottom-10 left-12 md:left-24'>
+                                                    <span className=''>TK.</span>{product.salePrice}
+                                                </p>
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
                                 </Link>
                                 <div className='text-center shadow-lg absolute w-full bottom-0'>
-                                    
-                                        <button onClick={() => dispatch(openProductModal(product))} className=" bg-[#1E201E] text-white w-full md:py-2 py-1">BUY NOW</button>
-                                  
+
+                                    <button onClick={() => dispatch(openProductModal(product))} className=" bg-[#1E201E] text-white w-full md:py-2 py-1">BUY NOW</button>
+
                                 </div>
                             </div>
                         ))}
                         <div className="place-self-center md:col-span-4 col-span-2 ">
                             <button onClick={() => setIndex(index + 20)} className={`btn flex items-center gap-1 btn-sm btn-primary text-white ${products.length <= index ? "hidden" : 'grid'}`}>
-                                SEE MORE 
+                                SEE MORE
                             </button>
                         </div>
                     </div>

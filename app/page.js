@@ -9,7 +9,6 @@ import FeatureProduct from "@/components/FeatureProducts/FeatureProduct";
 import VideoGallery from "@/components/VideoGallery/page";
 import ProductShowcase from "@/components/ProductShowcase/page";
 import { useDispatch } from "react-redux";
-import { setInitialState } from "@/lib/slices/cartSlice";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import baseUrl from "@/components/services/baseUrl";

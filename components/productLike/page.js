@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { openCardSlide } from "@/lib/slices/cardSlideSlice";
 import { addToCart } from "@/lib/slices/cartSlice";
 import baseUrl from "../services/baseUrl";
+import Image from "next/image";
 const ProductCard = (product) => {
   const [selectedSize, setSelectedSize] = useState("");
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ const ProductCard = (product) => {
    
     <div className="grid md:grid-cols-7 grid-cols-6 border-2 md:p-6 p-2 items-center gap-4 rounded-lg">
       <div className="col-span-2">
-        <img className="rounded-md" src={`${baseUrl}/${product.product.images[0]}`} />
+        <Image height={300} width={300} alt={product.product.productName} className="rounded-md" src={`${baseUrl}/${product.product.images[0]}`} />
       </div>
       <div className="md:col-span-3 col-span-2 flex flex-col gap-2 place-self-start">
         <p className="font-bold md:text-xl text-sm">{product.product.productName}</p>

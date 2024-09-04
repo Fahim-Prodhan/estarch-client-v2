@@ -53,15 +53,15 @@ export default function HeaderBanner() {
               carousels.map((carousel, index) => (
                 <SwiperSlide key={index} className="w-full">
                   <Link href={carousel.link}>
-                    <Image
-                      className="overflow-hidden md:max-h-[600px]"
+                  <Image
+                      className="overflow-hidden md:max-h-[600px] w-full"
                       src={`${baseUrl}/${carousel.images[0]}`}
-                      alt={`${baseUrl}/${carousel.images[0]}`}
-                      width={1200}
-                      height={600}
+                      alt={`Carousel Image ${index + 1}`}
+                      width={800}
+                      height={500}
                       layout="responsive"
                       objectFit="cover"
-                      priority
+                      loading={index === 0 ? 'eager' : 'lazy'} 
                     />
                   </Link>
                 </SwiperSlide>

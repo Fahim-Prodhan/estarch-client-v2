@@ -73,7 +73,7 @@ export default function FeatureProduct() {
             <div key={product._id} className="card card-compact bg-base-100 w-96 shadow-md rounded-none h-[350px] md:h-full relative ">
               <Link href={`/product/${product?.productName}?sku=${product?.SKU}`}>
                 <figure className='relative'>
-                  <Image src={`${baseUrl}/${product.images[0]}`} width={500} height={0} alt={product.productName} />
+                  <Image className='w-[320px]' src={`${baseUrl}/${product.images[0]}`} width={300} height={300} alt={product.productName} />
                 </figure>
                 <div className="pt-1 lg:px-6 px-2">
                   <h2 className="md:text-[18px] text-[14px] font-bold text-center">
