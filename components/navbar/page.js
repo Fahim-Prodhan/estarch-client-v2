@@ -61,17 +61,7 @@ export default function NavBar() {
       setFilteredProduct([]);
     }
   }, [productValue, products]);
-  // const handleSearch = async () => {
-  //   try {
-  //     setError('');
-  //     const response = await axios.get(`http://localhost:5000/api/products/search`, {
-  //       params: { productName: searchQuery }
-  //     });
-  //     setResults(response.data);
-  //   } catch (err) {
-  //     setError(err.response ? err.response.data.message : 'An error occurred');
-  //   }
-  // };
+
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -218,17 +208,15 @@ export default function NavBar() {
             <Link href="/">
               <button className="uppercase whitespace-nowrap text-sm md:text-[16px]">HOME</button>
             </Link>
-         
+
             <Link href="/new-arrival" className='relative md:-top-[10px] top-0'>
               <button className="uppercase whitespace-nowrap text-sm md:text-[16px]"><span className='lg:text-[13px] absolute bg-yellow-300 px-1 rounded-sm text-[10px]'>New</span><br /> Arrivals</button>
             </Link>
-            {
-              types.map(t =>
-                <Link key={t._id} href={`/${t.name}`} className=''>
-                  <button className="uppercase whitespace-nowrap text-sm md:text-[16px]">{t.name}</button>
-                </Link>
-              )
-            }
+            {types.filter(type => type.active).map(t => (
+              <Link key={t._id} href={`/${t.name}`} className=''>
+                <button className="uppercase whitespace-nowrap text-sm md:text-[16px]">{t.name}</button>
+              </Link>
+            ))}
 
           </div>
           <div className="lg:flex md:flex justify-end items-center hidden">

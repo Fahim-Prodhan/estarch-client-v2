@@ -13,15 +13,18 @@ const SellingCategory = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        setLoading(true); 
         axios.get(`${baseUrl}/api/categories/categories`)
             .then(res => {
-                setCategories(res.data);
-                setLoading(false);
+                const activeCategories = res.data.filter(category => category.active);
+                setCategories(activeCategories);
+                setLoading(false); 
             })
             .catch(() => {
-                setLoading(false);
+                setLoading(false); 
             });
     }, []);
+    
 
     return (
         <div className='mx-4 md:mx-12 lg:mx-20'>
