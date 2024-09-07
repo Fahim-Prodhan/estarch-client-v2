@@ -15,10 +15,16 @@ export default function Man() {
     useEffect(() => {
         axios.get(`${baseUrl}/api/categories/categories/${category}`)
             .then(res => {
-                setCategories(res.data)
+                const activeCategories = res.data.filter(category => category.active);
+                setCategories(activeCategories);
             })
-    }, [category])
-
+            .catch(err => {
+                console.error('Error fetching categories:', err);
+                // Optionally handle error state
+            });
+    }, [category]);
+    
+   
 
     return (
         <div className="bg-white ">

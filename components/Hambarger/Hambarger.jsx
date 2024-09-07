@@ -23,22 +23,23 @@ function Hambarger() {
         const fetchCategories = async () => {
             try {
                 const response = await axios.get(`${baseUrl}/api/categories/categories`);
-                const groupedCategories = response.data.reduce((acc, category) => {
-                    const typeName = category.type.name;
+                const groupedCategories = response.data
+                    .filter(category => category.active) // Filter to include only active categories
+                    .reduce((acc, category) => {
+                        const typeName = category.type.name;
 
-                    if (!acc[typeName]) {
-                        acc[typeName] = [];
-                    }
+                        if (!acc[typeName]) {
+                            acc[typeName] = [];
+                        }
 
-                    acc[typeName].push(category);
-                    return acc;
-                }, {});
+                        acc[typeName].push(category);
+                        return acc;
+                    }, {});
 
                 setCategories(groupedCategories);
-                
+
                 // Automatically open all types initially
                 setOpenTypes(Object.keys(groupedCategories));
-
 
             } catch (error) {
                 console.error('Error fetching categories:', error);
@@ -132,13 +133,15 @@ function Hambarger() {
                                             {/* Subcategories under the selected category */}
                                             {openCategories.includes(category._id) && category.subcategories && (
                                                 <ul className="ml-3 space-y-1 text-[15px]">
-                                                    {category.subcategories.map((subcategory) => (
-                                                        <li className='italic opacity-80' key={subcategory._id}>
-                                                            <Link href={`/${typeName.toLowerCase()}/${category.name}/${subcategory.name}`}>
-                                                                {subcategory.name}
-                                                            </Link>
-                                                        </li>
-                                                    ))}
+                                                    {category.subcategories
+                                                        .filter(subcategory => subcategory.active) // Filter to include only active subcategories
+                                                        .map((subcategory) => (
+                                                            <li className='italic opacity-80' key={subcategory._id}>
+                                                                <Link href={`/${typeName.toLowerCase()}/${category.name}/${subcategory.name}`}>
+                                                                    {subcategory.name}
+                                                                </Link>
+                                                            </li>
+                                                        ))}
                                                 </ul>
                                             )}
                                         </div>
