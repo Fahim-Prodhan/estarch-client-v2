@@ -19,7 +19,6 @@ import baseUrl from "../services/baseUrl";
 const SlideCard = () => {
   const isOpen = useSelector((state) => state.cardSlide.isOpen);
   const cartItems = useSelector((state) => state.cart.items);
-  console.log(cartItems);
   const dispatch = useDispatch();
 
   const handleSlideCard = () => {

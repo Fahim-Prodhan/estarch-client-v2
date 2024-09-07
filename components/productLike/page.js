@@ -33,7 +33,7 @@ const ProductCard = (product) => {
    
     <div className="grid md:grid-cols-7 grid-cols-6 border-2 md:p-6 p-2 items-center gap-4 rounded-lg">
       <div className="col-span-2">
-        <Image height={300} width={300} alt={product.product.productName} className="rounded-md" src={`${baseUrl}/${product.product.images[0]}`} />
+        <Image height={0} width={500} className="rounded-md" src={`${baseUrl}/${product.product.images[0]}`} />
       </div>
       <div className="md:col-span-3 col-span-2 flex flex-col gap-2 place-self-start">
         <p className="font-bold md:text-xl text-sm">{product.product.productName}</p>

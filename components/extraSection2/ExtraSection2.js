@@ -57,13 +57,13 @@ export default function ExtraSection2() {
     const [extraSection, setExtraSection] = useState(null)
     const [typeName, setTypeName] = useState(null)
     const [categoryName, setCategoryName] = useState(null)
+    const [loading, setLoading] = useState(true);
 
 
     useEffect(() => {
         // Getting extra Section
         axios.get(`${baseUrl}/api/extra-section`)
             .then(res => {
-                console.log(res.data);
                 setExtraSection(res.data)
             })
     }, [extraSection?.type2])
@@ -74,7 +74,6 @@ export default function ExtraSection2() {
                 .then(res => {
                     setProducts(res.data)
                 })
-            console.log("Category");
 
         } else if (extraSection?.type2 === 'Subcategory') {
             axios.get(`${baseUrl}/api/products/products/subcategory/${encodeURIComponent(extraSection?.name2)}`)
@@ -107,20 +106,27 @@ export default function ExtraSection2() {
                     }
                 </div>
                 <Slider {...settings}>
-                    {products.map(product => (
+                    {products.map((product, index) => (
                         <div key={product._id} className="card card-compact bg-base-100 w-96 shadow-md rounded-none h-[350px] md:h-full relative ">
                             <Link href={`/product/${product?.productName}?sku=${product?.SKU}`}>
                                 <figure className='relative'>
-                                    <Image className='w-[320px]' src={`${baseUrl}/${product.images[0]}`} width={300} height={0} alt={product.productName} />
+                                    <Image
+                                        src={`${baseUrl}/${product.images[0]}`}
+                                        width={500}
+                                        height={0}
+                                        alt={product.productName}
+                                        loading={index === 0 ? 'lazy' : 'eager'}
+                                        sizes='(max-width: 640px) 30vw, (max-width: 768px) 50vw, (max-width: 1024px) 800vw, 100vw'
+                                    />
                                 </figure>
                                 <div className="pt-1 lg:px-6 px-2">
-                                    <h2 className="md:text-[18px] text-[14px] font-bold text-center">
+                                    <h2 className="md:text-[17px] text-[14px] font-bold text-center">
                                         {product.productName.length > 22
                                             ? `${product.productName.slice(0, 22)}...`
                                             : product.productName
                                         }</h2>
                                     <div className='text-center'>
-                                        <div className="absolute md:relative bottom-8 md:bottom-0 left-7 md:left-0">
+                                        <div className="absolute md:relative bottom-8 md:bottom-0 left-9 md:left-0">
                                             <p className={`bg-[#000]  text-white text-sm md:text-[16px] mt-2 w-full md:w-[50%] mx-auto mb-2 ${product.regularPrice - product.salePrice > 0 ? 'visible' : 'invisible'}`}>
                                                 Save Tk. {product.regularPrice - product.salePrice}
                                             </p>
@@ -135,7 +141,7 @@ export default function ExtraSection2() {
                                         </div>
 
                                         {product.regularPrice - product.salePrice <= 0 && (
-                                            <p className='my-1 text-[17px] md:text-[20px] text-black text-center absolute md:relative bottom-10 md:bottom-0 left-12 md:left-0'>
+                                            <p className='my-1 text-[17px] md:text-[20px] text-black text-center absolute md:relative bottom-8 md:bottom-0 left-[60px] md:left-0'>
                                                 <span className=''>TK.</span>{product.salePrice}
                                             </p>
                                         )}
@@ -150,13 +156,6 @@ export default function ExtraSection2() {
                 </Slider>
                 <ProductModal />
             </div>
-            <style jsx>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rancho&display=swap');
-
-        .font-pop {
-          font-family: "Poppins", sans-serif;
-        }
-      `}</style>
         </div>
     )
 }

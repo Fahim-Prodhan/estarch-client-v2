@@ -9,7 +9,6 @@ function Size() {
     const dispatch = useDispatch();
     const isOpen = useSelector((state) => state.size.isOpen);
     const selectedChart = useSelector((state) => state.size.sizes);
-    console.log(selectedChart?.data);
 
     if (!selectedChart?.data || selectedChart?.data.length === 0) {
         return null;

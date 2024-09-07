@@ -3,24 +3,45 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import '../bestSell/BestSell-theme.css';
-import Image from 'next/image';
 import axios from 'axios';
 import baseUrl from '../services/baseUrl';
 import Link from 'next/link';
 import { useDispatch } from 'react-redux';
 import { openProductModal } from '@/lib/slices/productModalSlice';
 import ProductModal from '../ProductModal/page';
+import Image from 'next/image';
+
+// Skeleton component using Tailwind CSS
+const SkeletonCard = () => {
+  return (
+    <div className="card bg-base-100 shadow-md rounded-none mx-4">
+      <div className="bg-gray-300 animate-pulse h-64 w-full"></div>
+      <div className="p-4">
+        <div className="h-4 bg-gray-300 animate-pulse mb-2 w-3/4"></div>
+        <div className="h-4 bg-gray-300 animate-pulse mb-2 w-1/2"></div>
+        <div className="h-4 bg-gray-300 animate-pulse mb-2 w-1/4"></div>
+      </div>
+      <div className='text-center'>
+        <div className="h-10 bg-gray-300 animate-pulse w-full"></div>
+      </div>
+    </div>
+  );
+};
+
 export default function NewArrival() {
   const [products, setProducts] = useState([]);
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`${baseUrl}/api/products/new-arrival`)
+    axios.get(`${baseUrl}/api/products/home-new-arrival`)
       .then(res => {
         setProducts(res.data);
+        setLoading(false);
       })
       .catch(err => {
         console.error('Error fetching new arrivals:', err);
+        setLoading(false);
       });
   }, []);
 
@@ -63,8 +84,6 @@ export default function NewArrival() {
     ]
   };
 
-
-
   return (
     <div>
       <div className="slider-container mx-0 lg:mx-20">
@@ -73,12 +92,23 @@ export default function NewArrival() {
           <Link className='lg:text-xl font-normal text-orange-500' href={'/new-arrival'}>View All</Link>
         </div>
         <Slider {...settings}>
-          {products.map(product => (
-            <div key={product?._id} className="card bg-base-100 w-96 shadow-md rounded-none">
+          {loading
+            ? [...Array(4)].map((_, index) => (
+                <SkeletonCard key={index} />
+              ))
+            : products.map((product, index) => (
+                  <div key={product?._id} className="card bg-base-100 shadow-md rounded-none">
               <Link href={`/product/${product?.productName}?sku=${product?.SKU}`}>
                 <div>
                   <figure className='relative'>
-                    <Image className='w-[320px]' src={`${baseUrl}/${product.images[0]}`} width={300} height={0} alt={product.productName} />
+                  <Image 
+                  src={`${baseUrl}/${product.images[0]}`} 
+                  width={320} 
+                  height={400} 
+                  priority={index === 0}
+                  alt={product.productName}
+                  sizes='(max-width: 640px) 60vw, (max-width: 768px) 60vw, (max-width: 1024px) 800vw, 100vw'
+                  />
                     <p className='absolute top-2 bg-error text-white left-2 px-2 rounded-md'>New</p>
                   </figure>
                   <div className="pt-1 px-6">
@@ -117,7 +147,7 @@ export default function NewArrival() {
               </div>
             </div>
 
-          ))}
+              ))}
         </Slider>
       </div>
       <ProductModal/>

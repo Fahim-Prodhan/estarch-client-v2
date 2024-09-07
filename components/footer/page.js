@@ -41,7 +41,7 @@ export default function Footer() {
 
             <p className="text-white mt-2"> SUN - SAT, 10:30 AM - 10 PM</p>
             <div className="flex flex-row gap-3 mt-4">
-            <Link href='https://wa.me/01781813939'>
+            <Link rel='preconnect' href='https://wa.me/01781813939'>
               <div
                 className="border rounded-full h-10 w-10 px-2 py-1 flex justify-center items-center"
                 style={{ borderColor: "rgb(184, 149, 121)" }}
@@ -58,7 +58,7 @@ export default function Footer() {
               
                 </div>
               </Link>
-              <Link href='https://www.instagram.com/estarch.com.bd'>
+              <Link rel='preconnect' href='https://www.instagram.com/estarch.com.bd'>
               <div
                 className="border rounded-full h-10 w-10 px-2 py-1 flex justify-center items-center"
                 style={{ borderColor: "rgb(184, 149, 121)" }}
@@ -73,7 +73,7 @@ export default function Footer() {
                 />
               </div>
               </Link>
-              <Link href='https://www.facebook.com/Estarch.com.bd '>
+              <Link rel='preconnect' href='https://www.facebook.com/Estarch.com.bd '>
               <div
                 className="border rounded-full h-10 w-10 py-1 p-2 flex justify-center items-center"
                 style={{ borderColor: "rgb(184, 149, 121)" }}
@@ -87,7 +87,7 @@ export default function Footer() {
                 />
                 </div>
               </Link>
-              <Link href='https://m.me/estarch.com.bd'>
+              <Link rel='preconnect' href='https://m.me/estarch.com.bd'>
               <div
                 className="border rounded-full h-10 w-10 px-2 py-1 flex justify-center items-center"
                 style={{ borderColor: "rgb(184, 149, 121)" }}

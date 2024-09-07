@@ -90,7 +90,6 @@ export default function Checkout() {
         e.preventDefault();
         if (!product) return;
 
-        console.log(discount());
 
         const orderData = {
             serialId: 'E-commerce',

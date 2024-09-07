@@ -14,6 +14,8 @@ const firaSans = Fira_Sans({
 });
 
 
+
+
 // Dynamically import non-critical components
 const DynamicSlideCard = dynamic(() => import('@/components/SlideCard/SlideCard'), {
   ssr: false, // Disable server-side rendering if needed

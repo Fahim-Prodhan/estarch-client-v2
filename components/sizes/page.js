@@ -2,7 +2,6 @@ import React from "react";
 
 const SizeChart = ({ charts }) => {
   const data = charts?.data;
-  console.log(data, charts );
   
   if (!data || data.length === 0) {
     return <p>No data available</p>;

@@ -17,7 +17,6 @@ import ContactCard from "@/components/WishlistPhone/page";
 import parse from 'html-react-parser';
 import baseUrl from "@/components/services/baseUrl";
 
-
 const ProductDetails = () => {
   const dispatch = useDispatch();
   const [product, setProduct] = useState(null);
@@ -30,7 +29,7 @@ const ProductDetails = () => {
   const searchParams = useSearchParams();
   const sku = searchParams.get("sku")
 
-  
+
 
   const router = useRouter();
   useEffect(() => {
@@ -39,8 +38,6 @@ const ProductDetails = () => {
         const response = await axios.get(`${baseUrl}/api/products/products/product-details/${encodeURIComponent(product_name)}/${sku}`);
         setProduct(response.data);
         setMainImage(response.data?.images[0]);
-  
-
         // if (response.data.selectedSizes.length > 0) {
         //   setSelectedSize(response.data.selectedSizes[0]);
         // }
@@ -52,6 +49,65 @@ const ProductDetails = () => {
       fetchProduct();
     }
   }, [product_name, sku]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return;
+    if (!product) return;
+  
+    const fbc = document.cookie.split('; ').find(row => row.startsWith('_fbc='))?.split('=')[1];
+    const fbp = document.cookie.split('; ').find(row => row.startsWith('_fbp='))?.split('=')[1];
+  
+    const storedVisitorId = window.localStorage.getItem('visitorId');
+    const visitorId = storedVisitorId || generateVisitorId();
+  
+    if (!storedVisitorId) {
+      window.localStorage.setItem('visitorId', visitorId);
+    }
+    // Google Tag Manager Data Layer Push
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'product_view',
+      content_ids: product.SKU,
+      content_name: product.productName,
+      value: product.salePrice,
+      currency: 'BDT',
+      fbc: fbc || 'not_available',
+      fbp: fbp || 'not_available',
+      client_ip_address: visitorId,
+      external_id: navigator.userAgent,
+      client_user_agent: generateEventId(),
+      content_type: 'product',
+      first_party_collection: true
+    })
+
+    if (typeof fbq === 'function') {
+      fbq('track', 'ViewContent', {
+        content_ids: product.SKU || 'undefined',
+        content_name: product.productName || 'undefined',
+        value: product.salePrice || 'undefined',
+        currency: 'BDT',
+        fbc: fbc || 'not_available',
+        fbp: fbp || 'not_available',
+        client_ip_address: visitorId || 'undefined',
+        external_id: navigator.userAgent || 'undefined',
+        client_user_agent: generateEventId() || 'undefined',
+        content_type: 'product',
+        first_party_collection: true,
+      });
+    } else {
+      console.error('Facebook Pixel is not loaded.');
+    }
+    
+  }, [product]);
+  
+
+  function generateVisitorId() {
+    return `visitor_${Math.random().toString(36).substring(2)}`;
+  }
+
+  function generateEventId() {
+    return `event_${Math.random().toString(36).substring(2)}`;
+  }
 
   const handleAddToCart = () => {
     if (selectedSize) {
@@ -71,6 +127,14 @@ const ProductDetails = () => {
         color: 'Blue', // Add actual color if available
         size: selectedSize,
       }));
+
+      window.dataLayer.push({
+        event: 'add_to_cart',
+        content_ids: product.SKU,
+        content_name: product.productName,
+        value: product.salePrice,
+        currency: 'BDT',
+      });
     } else {
       setWarning(true)
     }
@@ -117,8 +181,7 @@ const ProductDetails = () => {
     }
   };
 
-  console.log(product);
-  
+
 
 
   return (

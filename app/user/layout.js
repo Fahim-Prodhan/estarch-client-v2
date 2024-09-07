@@ -21,8 +21,8 @@ export default function DashboardLayout({ children }) {
     <div className="grid md:grid-cols-12 md:mx-12 my-4 ">
       <div className="breadcrumbs text-sm lg:col-span-2 md:col-span-4 hidden md:block">
         <ul>
-          <li><a>Home</a></li>
-          <li><a>My Account</a> </li>
+          <li><p className="cursor-pointer">Home</p></li>
+          <li><p className="cursor-pointer">My Account</p> </li>
         </ul>
       </div>
       <div className="lg:col-span-10 md:col-span-8 mx-4">
