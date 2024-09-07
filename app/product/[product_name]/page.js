@@ -186,7 +186,7 @@ const ProductDetails = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="breadcrumbs text-xs md:my-6 my-3 md:pl-8 pl-2">
+      <div className="breadcrumbs text-xs md:text-sm md:my-6 my-3 md:pl-8 pl-2">
         <ul>
           <li>
             <Link className="uppercase" href={'/'}>Home</Link>

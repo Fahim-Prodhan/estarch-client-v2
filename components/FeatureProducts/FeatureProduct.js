@@ -78,6 +78,10 @@ export default function FeatureProduct() {
       });
   }, []);
 
+  const truncateText = (text, maxLength) => {
+    return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
+  };
+
   return (
     <div>
       <div className="slider-container mx-0 lg:mx-20">
@@ -107,11 +111,8 @@ export default function FeatureProduct() {
                     />
                   </figure>
                   <div className="pt-1 lg:px-6 px-2">
-                    <h2 className="md:text-[17px] text-[14px] font-bold text-center">
-                      {product.productName.length > 22
-                        ? `${product.productName.slice(0, 22)}...`
-                        : product.productName
-                      }
+                    <h2 className="md:text-[15px] text-[12px] font-bold text-center whitespace-nowrap overflow-hidden text-ellipsis">
+                      {truncateText(product.productName, product.productName.length)}
                     </h2>
                     <div className='text-center'>
                       <div className="absolute md:relative bottom-8 md:bottom-0 left-9 md:left-0">

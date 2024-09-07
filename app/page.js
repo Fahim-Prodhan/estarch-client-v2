@@ -15,6 +15,7 @@ import baseUrl from "@/components/services/baseUrl";
 import ExtraSection1 from "@/components/extraSection1/ExtraSection1";
 import ExtraSection2 from "@/components/extraSection2/ExtraSection2";
 import ExtraSection3 from "@/components/extraSection3/ExtraSection3";
+import BestSell from "@/components/bestSell/BestSell";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -94,6 +95,7 @@ export default function Home() {
           {toggles.webVideo && <VideoGallery />}                
           {toggles.webProductShowCase && <ProductShowcase />}    
           {toggles.webFeature && <FeatureProduct />} 
+          {toggles.webBestDeal && <BestSell />}  
           {toggles.webNewsLetter && <Subscription />}  
         </>
       ) : (
@@ -106,6 +108,7 @@ export default function Home() {
           {toggles.mobileVideo && <VideoGallery />}
           {toggles.mobileProductShowCase && <ProductShowcase />}
           {toggles.mobileFeature && <FeatureProduct />}
+          {toggles.mobileBestDeal && <BestSell />}
           {toggles.mobileNewsLetter && <Subscription />}
         </>
       )}

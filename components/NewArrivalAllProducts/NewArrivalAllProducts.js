@@ -88,6 +88,8 @@ const NewArrivalAllProducts = () => {
     const truncateText = (text, maxLength) => {
         return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
       };
+
+
     const handleCheckboxChangeCat = (subcategory) => {
         setSelectedSubcategories((prevSubcategories) =>
             prevSubcategories.includes(subcategory)
@@ -212,7 +214,7 @@ const NewArrivalAllProducts = () => {
                                             height={400} />
                                     </figure>
                                     <div className="pt-1 lg:px-6 px-2">
-                                        <h2 className="md:text-[14px] text-[14px] font-bold text-center whitespace-nowrap overflow-hidden text-ellipsis">
+                                        <h2 className="md:text-[15px] text-[12px] font-bold text-center whitespace-nowrap overflow-hidden text-ellipsis">
                                             {truncateText(product.productName, product.productName.length)}
                                         </h2>
                                         <div className='text-center'>
