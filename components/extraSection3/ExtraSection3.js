@@ -103,7 +103,7 @@ export default function ExtraSection3() {
 
         } else if (extraSection?.type3 === 'Subcategory') {
             try {
-                axios.get(`${baseUrl}/api/products/products/subcategory/${encodeURIComponent(extraSection?.name3)}`)
+                axios.get(`${baseUrl}/api/products/products/subcategory/home/${encodeURIComponent(extraSection?.name3)}`)
                     .then(res => {
                         setProducts(res.data.products)
                         setLoading(false)

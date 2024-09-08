@@ -53,16 +53,16 @@ const SubcategoryProducts = () => {
     useEffect(() => {
         // Extract complex expressions into variables
         const selectedCategory = products[0]?.selectedCategory;
-    
+
         const fetchProducts = async () => {
-            let url = `${baseUrl}/api/products/products/category/products/${catName}?subcategories=${encodedSubcategory}`;
+            let url = `${baseUrl}/api/products/products/subcategory/${subCategory}`;
 
             // Add ranges to the query string if there are selected ranges
             if (selectedRanges.length > 0) {
                 const rangesQuery = JSON.stringify(selectedRanges);
                 url += `${url.includes('?') ? '&' : '?'}ranges=${encodeURIComponent(rangesQuery)}`;
             }
-    
+
             // Add subcategories to the query string if there are selected subcategories
             if (selectedSubcategories.length > 0) {
                 const subcategoriesQuery = JSON.stringify(selectedSubcategories);
@@ -74,20 +74,23 @@ const SubcategoryProducts = () => {
                 const sizesQuery = JSON.stringify(selectedSizes);
                 url += `${url.includes('?') ? '&' : '?'}sizes=${encodeURIComponent(sizesQuery)}`;
             }
-    
+
             // Add sortBy to the query string
             url += `${url.includes('?') ? '&' : '?'}sortBy=${encodeURIComponent(sortBy)}`;
-    
+
             try {
                 const response = await fetch(url);
                 const data = await response.json();
+             
                 setProducts(data);
+                console.log(data);
+                
                 extractUniqueSizes(data); // Extract unique sizes from products
             } catch (error) {
                 console.error("Error fetching products:", error);
             }
         };
-    
+
         const fetchSubcategories = async () => {
             if (selectedCategory) {
                 try {
@@ -98,7 +101,7 @@ const SubcategoryProducts = () => {
                 }
             }
         };
-    
+
         const fetchCategoryName = async () => {
             if (selectedCategory) {
                 try {
@@ -109,12 +112,12 @@ const SubcategoryProducts = () => {
                 }
             }
         };
-    
+
         fetchCategoryName();
         fetchSubcategories();
         fetchProducts();
     }, [catName, encodedSubcategory, selectedRanges, selectedSubcategories, selectedSizes, sortBy]);
-    
+
     // Sort
     const handleSortChange = (e) => {
         setSortBy(e.target.value);
@@ -122,7 +125,7 @@ const SubcategoryProducts = () => {
 
     const truncateText = (text, maxLength) => {
         return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
-      };
+    };
 
     const handleCheckboxChangeCat = (subcategory) => {
         setSelectedSubcategories((prevSubcategories) =>
@@ -245,51 +248,51 @@ const SubcategoryProducts = () => {
                     <div className="col-span-10 gap-6 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
                         {products.slice(0, index).map((product) => (
                             <div
-                            key={product._id}
-                            className="card card-compact bg-base-200 shadow-lg rounded-none relative border-2 border-base-200 hover:border-blue-300"
-                        >
-                            <Link href={`/product/${product?.productName}?sku=${product?.SKU}`}>
-                                <figure>
-                                    <Image sizes="30vw" src={`${baseUrl}/${product.images[0]}`} alt={product.productName} width={350}
-                                        height={400} />
-                                </figure>
-                                <div className="pt-1 lg:px-6 px-2">
-                                    <h2 className="md:text-[15px] text-[12px] font-bold text-center whitespace-nowrap overflow-hidden text-ellipsis">
-                                        {truncateText(product.productName, product.productName.length)}
-                                    </h2>
-                                    <div className='text-center'>
-                                        <div className="">
-                                            <p className={`bg-black text-white text-sm md:text-[14px] mt-2 md:mx-8 mx-4 ${product.regularPrice - product.salePrice > 0 ? 'visible' : 'invisible'}`}>
-                                                Save Tk. {product.regularPrice - product.salePrice}
-                                            </p>
-                                            {
-                                                product.regularPrice - product.salePrice > 0 && (
-                                                    <p className='my-1 text-[16px] md:text-[20px] text-black text-center '>
-                                                        <span>TK.</span>{product.salePrice}
-                                                        <span className='md:text-[17px] text-sm line-through text-red-500'> Tk.{product.regularPrice}</span>
-                                                    </p>
-                                                )
-                                            }
+                                key={product._id}
+                                className="card card-compact bg-base-200 shadow-lg rounded-none relative border-2 border-base-200 hover:border-blue-300"
+                            >
+                                <Link href={`/product/${product?.productName}?sku=${product?.SKU}`}>
+                                    <figure>
+                                        <Image sizes="30vw" src={`${baseUrl}/${product.images[0]}`} alt={product.productName} width={350}
+                                            height={400} />
+                                    </figure>
+                                    <div className="pt-1 lg:px-6 px-2">
+                                        <h2 className="md:text-[15px] text-[12px] font-bold text-center whitespace-nowrap overflow-hidden text-ellipsis">
+                                            {truncateText(product.productName, product.productName.length)}
+                                        </h2>
+                                        <div className='text-center'>
+                                            <div className="">
+                                                <p className={`bg-black text-white text-sm md:text-[14px] mt-2 md:mx-8 mx-4 ${product.regularPrice - product.salePrice > 0 ? 'visible' : 'invisible'}`}>
+                                                    Save Tk. {product.regularPrice - product.salePrice}
+                                                </p>
+                                                {
+                                                    product.regularPrice - product.salePrice > 0 && (
+                                                        <p className='my-1 text-[16px] md:text-[20px] text-black text-center '>
+                                                            <span>TK.</span>{product.salePrice}
+                                                            <span className='md:text-[17px] text-sm line-through text-red-500'> Tk.{product.regularPrice}</span>
+                                                        </p>
+                                                    )
+                                                }
+                                            </div>
+
+                                            {product.regularPrice - product.salePrice <= 0 && (
+                                                <p className='my-1 text-[17px] md:text-[20px] text-black text-center bottom-8 md:bottom-10 left-14 md:left-[110px]'>
+                                                    <span className=''>TK.</span>{product.salePrice}
+                                                </p>
+                                            )}
                                         </div>
-
-                                        {product.regularPrice - product.salePrice <= 0 && (
-                                            <p className='my-1 text-[17px] md:text-[20px] text-black text-center bottom-8 md:bottom-10 left-14 md:left-[110px]'>
-                                                <span className=''>TK.</span>{product.salePrice}
-                                            </p>
-                                        )}
                                     </div>
+                                </Link>
+                                <div className='text-center shadow-lg  w-full bottom-0'>
+
+                                    <button onClick={() => dispatch(openProductModal(product))} className=" bg-[#1E201E] text-white w-full md:py-2 py-1">BUY NOW</button>
+
                                 </div>
-                            </Link>
-                            <div className='text-center shadow-lg  w-full bottom-0'>
-
-                                <button onClick={() => dispatch(openProductModal(product))} className=" bg-[#1E201E] text-white w-full md:py-2 py-1">BUY NOW</button>
-
                             </div>
-                        </div>
                         ))}
                         <div className="place-self-center md:col-span-4 col-span-2 ">
                             <button onClick={() => setIndex(index + 20)} className={`btn flex items-center gap-1 btn-sm btn-primary text-white ${products.length <= index ? "hidden" : 'grid'}`}>
-                                SEE MORE 
+                                SEE MORE
                             </button>
                         </div>
                     </div>

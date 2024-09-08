@@ -76,7 +76,7 @@ export default function ExtraSection2() {
                 })
 
         } else if (extraSection?.type2 === 'Subcategory') {
-            axios.get(`${baseUrl}/api/products/products/subcategory/${encodeURIComponent(extraSection?.name2)}`)
+            axios.get(`${baseUrl}/api/products/products/subcategory/home/${encodeURIComponent(extraSection?.name2)}`)
                 .then(res => {
                     setProducts(res.data.products)
                     setCategoryName(res.data.subcategory?.category?.name)
