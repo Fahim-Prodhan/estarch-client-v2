@@ -59,7 +59,7 @@ const SellingCategory = () => {
                         spaceBetween: 50,
                     },
                 }}
-                modules={[FreeMode, Navigation]}
+                modules={[FreeMode, Navigation,Autoplay]}
                 className="mySwiper"
             >
                 {loading ? (

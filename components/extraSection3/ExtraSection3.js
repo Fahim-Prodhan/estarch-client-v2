@@ -103,7 +103,7 @@ export default function ExtraSection3() {
 
         } else if (extraSection?.type3 === 'Subcategory') {
             try {
-                axios.get(`${baseUrl}/api/products/products/subcategory/${encodeURIComponent(extraSection?.name3)}`)
+                axios.get(`${baseUrl}/api/products/products/subcategory/home/${encodeURIComponent(extraSection?.name3)}`)
                     .then(res => {
                         setProducts(res.data.products)
                         setLoading(false)
@@ -124,9 +124,12 @@ export default function ExtraSection3() {
         }
     }, [extraSection?.name3, extraSection?.type3])
 
+    const truncateText = (text, maxLength) => {
+        return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
+    };
 
     return (
-        <div>
+        <div className={`${products.length < 1 ? 'hidden' : ''}`}>
             <div className="slider-container mx-0 lg:mx-20">
                 <h1 className='text-center mt-8 font-bold md:text-2xl lg:text-2xl text-lg uppercase'>{extraSection?.name3} Section</h1>
                 <div className='text-center mb-4'>
@@ -159,11 +162,8 @@ export default function ExtraSection3() {
                                         />
                                     </figure>
                                     <div className="pt-1 lg:px-6 px-2">
-                                        <h2 className="md:text-[17px] text-[14px] font-bold text-center">
-                                            {product.productName.length > 22
-                                                ? `${product.productName.slice(0, 22)}...`
-                                                : product.productName
-                                            }
+                                        <h2 className="md:text-[15px] text-[12px] font-bold text-center whitespace-nowrap overflow-hidden text-ellipsis">
+                                            {truncateText(product.productName, product.productName.length)}
                                         </h2>
                                         <div className='text-center'>
                                             <div className="absolute md:relative bottom-8 md:bottom-0 left-9 md:left-0">

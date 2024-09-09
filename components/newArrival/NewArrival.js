@@ -84,6 +84,10 @@ export default function NewArrival() {
     ]
   };
 
+  const truncateText = (text, maxLength) => {
+    return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
+  };
+
   return (
     <div>
       <div className="slider-container mx-0 lg:mx-20">
@@ -94,63 +98,61 @@ export default function NewArrival() {
         <Slider {...settings}>
           {loading
             ? [...Array(4)].map((_, index) => (
-                <SkeletonCard key={index} />
-              ))
+              <SkeletonCard key={index} />
+            ))
             : products.map((product, index) => (
-                  <div key={product?._id} className="card bg-base-100 shadow-md rounded-none">
-              <Link href={`/product/${product?.productName}?sku=${product?.SKU}`}>
-                <div>
-                  <figure className='relative'>
-                  <Image 
-                  src={`${baseUrl}/${product.images[0]}`} 
-                  width={320} 
-                  height={400} 
-                  priority={index === 0}
-                  alt={product.productName}
-                  sizes='(max-width: 640px) 60vw, (max-width: 768px) 60vw, (max-width: 1024px) 800vw, 100vw'
-                  />
-                    <p className='absolute top-2 bg-error text-white left-2 px-2 rounded-md'>New</p>
-                  </figure>
-                  <div className="pt-1 px-6">
-                    <h2 className="md:text-[18px] text-[16px] font-bold text-center">
-                      {product.productName.length > 22
-                        ? `${product.productName.slice(0, 22)}...`
-                        : product.productName
-                      }</h2>
-                    <div className='text-center'>
+              <div key={product?._id} className="card bg-base-100 shadow-md rounded-none">
+                <Link href={`/product/${product?.productName}?sku=${product?.SKU}`}>
+                  <div>
+                    <figure className='relative'>
+                      <Image
+                        src={`${baseUrl}/${product.images[0]}`}
+                        width={320}
+                        height={400}
+                        priority={index === 0}
+                        alt={product.productName}
+                        sizes='(max-width: 640px) 60vw, (max-width: 768px) 60vw, (max-width: 1024px) 800vw, 100vw'
+                      />
+                      <p className='absolute top-2 bg-error text-white left-2 px-2 rounded-md'>New</p>
+                    </figure>
+                    <div className="pt-1 px-6">
+                      <h2 className="md:text-[15px] text-[12px] font-bold text-center whitespace-nowrap overflow-hidden text-ellipsis">
+                        {truncateText(product.productName, product.productName.length)}
+                      </h2>
+                      <div className='text-center'>
 
-                      <>
-                        <p className={`bg-black text-white mt-2 w-[40%] mx-auto mb-2 ${product.regularPrice - product.salePrice > 0 ? 'visible' : 'invisible'}`}>
-                          Save Tk. {product.regularPrice - product.salePrice}
-                        </p>
-                        {
-                          product.regularPrice - product.salePrice > 0 && (
-                            <p className='my-1 text-[20px] text-black text-center'>
-                              <span className=''>TK.</span>{product.salePrice}
-                              <span className='md:text-[17px] line-through text-red-500'> Tk.{product.regularPrice}</span>
-                            </p>
-                          )
-                        }
-                      </>
+                        <>
+                          <p className={`bg-black text-white mt-2 w-[40%] mx-auto mb-2 ${product.regularPrice - product.salePrice > 0 ? 'visible' : 'invisible'}`}>
+                            Save Tk. {product.regularPrice - product.salePrice}
+                          </p>
+                          {
+                            product.regularPrice - product.salePrice > 0 && (
+                              <p className='my-1 text-[20px] text-black text-center'>
+                                <span className=''>TK.</span>{product.salePrice}
+                                <span className='md:text-[17px] line-through text-red-500'> Tk.{product.regularPrice}</span>
+                              </p>
+                            )
+                          }
+                        </>
 
-                      {product.regularPrice - product.salePrice <= 0 && (
-                        <p className='my-1 text-[20px] text-black text-center'>
-                          <span className=''>TK.</span>{product.salePrice}
-                        </p>
-                      )}
+                        {product.regularPrice - product.salePrice <= 0 && (
+                          <p className='my-1 text-[20px] text-black text-center'>
+                            <span className=''>TK.</span>{product.salePrice}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
+                </Link>
+                <div className='text-center'>
+                  <button onClick={() => dispatch(openProductModal(product))} className=" bg-[#1E201E] text-white w-full py-2">BUY NOW</button>
                 </div>
-              </Link>
-              <div className='text-center'>
-                <button onClick={()=>dispatch(openProductModal(product))} className=" bg-[#1E201E] text-white w-full py-2">BUY NOW</button>
               </div>
-            </div>
 
-              ))}
+            ))}
         </Slider>
       </div>
-      <ProductModal/>
+      <ProductModal />
     </div>
   );
 }

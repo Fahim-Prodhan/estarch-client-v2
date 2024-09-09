@@ -30,6 +30,10 @@ module.exports = {
         protocol: 'https',
         hostname: 'api.v1.estarch.online',
       },
+      {
+        protocol: 'https',
+        hostname: 'api.showroom.estarch.com.bd',
+      },
     ],
   },
 };
