@@ -39,9 +39,11 @@ export default function NavBar() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`${baseUrl}/api/products/products`);
+        const response = await fetch(`${baseUrl}/api/products/new-all-products`);
         const data = await response.json();
         setProducts(data);
+        console.log(data);
+        
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -52,7 +54,7 @@ export default function NavBar() {
   // Filter products based on the input value
   useEffect(() => {
     if (productValue) {
-      const filtered = products.filter(product =>
+      const filtered = products.slice(0,5).filter(product =>
         product.productName.toLowerCase().includes(productValue.toLowerCase()) ||
         product.SKU.toLowerCase().includes(productValue.toLowerCase())
       );
