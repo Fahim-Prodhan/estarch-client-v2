@@ -56,42 +56,15 @@ const ProductDetails = () => {
   
     const fbc = document.cookie.split('; ').find(row => row.startsWith('_fbc='))?.split('=')[1];
     const fbp = document.cookie.split('; ').find(row => row.startsWith('_fbp='))?.split('=')[1];
-  
-    const storedVisitorId = window.localStorage.getItem('visitorId');
-    const visitorId = storedVisitorId || generateVisitorId();
-  
-    if (!storedVisitorId) {
-      window.localStorage.setItem('visitorId', visitorId);
-    }
-    // Google Tag Manager Data Layer Push
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: 'product_view',
-      content_ids: product.SKU,
-      content_name: product.productName,
-      value: product.salePrice,
-      currency: 'BDT',
-      fbc: fbc || 'not_available',
-      fbp: fbp || 'not_available',
-      client_ip_address: visitorId,
-      external_id: navigator.userAgent,
-      client_user_agent: generateEventId(),
-      content_type: 'product',
-      first_party_collection: true
-    })
-
     if (typeof fbq === 'function') {
-      fbq('track', 'ViewContent', {
+      fbq('track', 'product_view', {
+        content_type: 'product',
         content_ids: product.SKU || 'undefined',
         content_name: product.productName || 'undefined',
         value: product.salePrice || 'undefined',
         currency: 'BDT',
         fbc: fbc || 'not_available',
         fbp: fbp || 'not_available',
-        client_ip_address: visitorId || 'undefined',
-        external_id: navigator.userAgent || 'undefined',
-        client_user_agent: generateEventId() || 'undefined',
-        content_type: 'product',
         first_party_collection: true,
       });
     } else {
@@ -99,15 +72,6 @@ const ProductDetails = () => {
     }
     
   }, [product]);
-  
-
-  function generateVisitorId() {
-    return `visitor_${Math.random().toString(36).substring(2)}`;
-  }
-
-  function generateEventId() {
-    return `event_${Math.random().toString(36).substring(2)}`;
-  }
 
   const handleAddToCart = () => {
     if (selectedSize) {
@@ -127,14 +91,19 @@ const ProductDetails = () => {
         color: 'Blue', // Add actual color if available
         size: selectedSize,
       }));
-
-      window.dataLayer.push({
-        event: 'add_to_cart',
-        content_ids: product.SKU,
-        content_name: product.productName,
-        value: product.salePrice,
-        currency: 'BDT',
-      });
+      if (typeof fbq === 'function') {
+        fbq('track', 'add_to_cart', {
+          content_type: 'product',
+          content_ids: product.SKU || 'undefined',
+          content_name: product.productName || 'undefined',
+          value: product.salePrice || 'undefined',
+          currency: 'BDT',
+          Size:selectedSize
+        });
+        setSelectedSize('')
+      } else {
+        console.error('Facebook Pixel is not loaded.');
+      }
     } else {
       setWarning(true)
     }

@@ -15,6 +15,7 @@ import Link from "next/link";
 import { RxCross2 } from "react-icons/rx";
 import { MdArrowDropDown, MdArrowDropUp } from "react-icons/md";
 import baseUrl from "../services/baseUrl";
+import { useEffect } from "react";
 
 const SlideCard = () => {
   const isOpen = useSelector((state) => state.cardSlide.isOpen);
@@ -34,8 +35,8 @@ const SlideCard = () => {
     dispatch(increaseQuantity(id));
   };
 
-  const handleRemoveItem = (id) => {
-    dispatch(removeItem(id));
+  const handleRemoveItem = (item) => {
+    dispatch(removeItem(item));
   };
 
   const calculateSubtotal = () => {
@@ -44,7 +45,47 @@ const SlideCard = () => {
       0
     );
   };
-
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return;
+  
+    // Extract Facebook cookies
+    const fbc = document.cookie.split('; ').find(row => row.startsWith('_fbc='))?.split('=')[1];
+    const fbp = document.cookie.split('; ').find(row => row.startsWith('_fbp='))?.split('=')[1];
+  
+    // Prepare cart items with only the necessary fields
+    const simplifiedCartItems = cartItems.map(item => ({
+      title: item.product.title,
+      sku: item.product.sku,
+      size: item.size,
+      value: item.product.price,
+      quantity: item.quantity
+    }));
+  
+    // Format the cart items into a more organized structure for display
+    const formattedCartItems = simplifiedCartItems.map(item => `
+      Title: ${item.title}
+      SKU: ${item.sku}
+      Size: ${item.size}
+      Price: ${item.value} BDT
+      Quantity: ${item.quantity}
+    `).join('\n-------------------\n');  // Join each item with a separator for clarity
+  
+    if (typeof fbq === 'function' && isOpen) {
+      fbq('track', 'cart_view', {
+        content_type: 'product',
+        currency: 'BDT',
+        fbc: fbc || 'not_available',
+        fbp: fbp || 'not_available',
+        cartItems: formattedCartItems, // Use formatted cart items here
+        first_party_collection: true,
+      });
+    } else {
+      console.error('Facebook Pixel is not loaded.');
+    }
+  
+  }, [cartItems]); // Add cartItems as a dependency so the effect runs when cart items change
+   // Add cartItems as a dependency so the effect runs when cart items change
+  
   return (
     <div
       className={`w-[100%] md:w-[30%] bg-base-100 shadow-2xl h-full z-[99999] p-6 fixed top-0 transition-all duration-500 ${
@@ -108,7 +149,7 @@ const SlideCard = () => {
                 <div className="flex justify-end ml-5">
                   <h1
                     className="text-sm cursor-pointer text-red-600"
-                    onClick={() => handleRemoveItem(item.id)}
+                    onClick={() => handleRemoveItem(item)}
                   >
                     <RxCross2 size={20} />
                   </h1>

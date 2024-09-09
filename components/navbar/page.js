@@ -36,6 +36,7 @@ export default function NavBar() {
   const [filteredProduct, setFilteredProduct] = useState([]); // State to hold filtered products
   const [productValue, setProductValue] = useState('');
   const router = useRouter()
+  const cartItems = useSelector((state) => state.cart.items);
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -83,6 +84,49 @@ export default function NavBar() {
     setProductValue('');
     setFilteredProduct([]);
   };
+  const handleCart = () =>{
+    dispatch(openCardSlide())
+    if (typeof window === 'undefined' || typeof document === 'undefined') return;
+  
+    // Extract Facebook cookies
+    const fbc = document.cookie.split('; ').find(row => row.startsWith('_fbc='))?.split('=')[1];
+    const fbp = document.cookie.split('; ').find(row => row.startsWith('_fbp='))?.split('=')[1];
+  
+    // Prepare cart items with only the necessary fields
+    const simplifiedCartItems = cartItems.map(item => ({
+      title: item.product.title,
+      sku: item.product.sku,
+      size: item.size,
+      value: item.product.price,
+      quantity: item.quantity
+    }));
+  
+    // Format the cart items into a more organized structure for display
+    const formattedCartItems = simplifiedCartItems.map(item => `
+      Title: ${item.title}
+      SKU: ${item.sku}
+      Size: ${item.size}
+      Price: ${item.value} BDT
+      Quantity: ${item.quantity}
+    `).join('\n-------------------\n');  // Join each item with a separator for clarity
+  
+    if (typeof fbq === 'function') {
+      fbq('track', 'cart_view', {
+        content_type: 'product',
+        currency: 'BDT',
+        fbc: fbc || 'not_available',
+        fbp: fbp || 'not_available',
+        cartItems: formattedCartItems, // Use formatted cart items here
+        first_party_collection: true,
+      });
+    } else {
+      console.error('Facebook Pixel is not loaded.');
+    }
+
+  }
+
+
+
   return (
     <div className="">
       <div className="md:px-10 lg:px-10 bg-base-100 shadow-sm md:shadow-none navbar border-b fixed lg:relative top-0 z-[99999]">
@@ -132,7 +176,7 @@ export default function NavBar() {
           </div>
           <div className="flex gap-3 ml-10 lg:hidden md:hidden">
             <CiSearch className="text-[30px] cursor-pointer opacity-70" onClick={toggleSearch} />
-            <div className="relative" onClick={() => dispatch(openCardSlide())}>
+            <div className="relative" onClick={() => handleCart()}>
               <HiOutlineShoppingBag className="relative text-2xl" />
               {totalQuantity > 0 && (
                 <span className="bg-red-600 text-white rounded-full absolute -top-1 -right-1 w-4 h-4 text-xs flex items-center justify-center">
@@ -186,7 +230,7 @@ export default function NavBar() {
               <div>
                 <CiSearch className="text-[30px] cursor-pointer opacity-70" onClick={toggleSearch} />
               </div>
-              <HiOutlineShoppingBag onClick={() => dispatch(openCardSlide())} className="text-[25px]" />
+              <HiOutlineShoppingBag onClick={() => handleCart()} className="text-[25px]" />
               <Link href={'/user'}>
                 <CgProfile className="text-[25px]" />
               </Link>
@@ -220,7 +264,7 @@ export default function NavBar() {
 
           </div>
           <div className="lg:flex md:flex justify-end items-center hidden">
-            <div className="relative " onClick={() => dispatch(openCardSlide())}>
+            <div className="relative " onClick={() => handleCart()}>
               <HiOutlineShoppingBag className="relative text-2xl" />
               {totalQuantity > 0 && (
                 <span className="bg-red-600 text-white rounded-full absolute -top-1 -right-1 w-4 h-4 text-xs flex items-center justify-center">

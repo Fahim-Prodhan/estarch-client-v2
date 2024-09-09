@@ -1,5 +1,5 @@
 'use client';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
@@ -122,6 +122,46 @@ export default function Checkout() {
       console.error('There was an error placing the order!', error);
     }
   };
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return;
+  
+    // Extract Facebook cookies
+    const fbc = document.cookie.split('; ').find(row => row.startsWith('_fbc='))?.split('=')[1];
+    const fbp = document.cookie.split('; ').find(row => row.startsWith('_fbp='))?.split('=')[1];
+  
+    // Prepare cart items with only the necessary fields
+    const simplifiedCartItems = cartItems.map(item => ({
+      title: item.product.title,
+      sku: item.product.sku,
+      size: item.size,
+      value: item.product.price,
+      quantity: item.quantity
+    }));
+  
+    // Format the cart items into a more organized structure for display
+    const formattedCartItems = simplifiedCartItems.map(item => `
+      Title: ${item.title}
+      SKU: ${item.sku}
+      Size: ${item.size}
+      Price: ${item.value} BDT
+      Quantity: ${item.quantity}
+    `).join('\n-------------------\n');  // Join each item with a separator for clarity
+  
+    if (typeof fbq === 'function' ) {
+      fbq('track', 'checkout', {
+        content_type: 'product',
+        currency: 'BDT',
+        fbc: fbc || 'not_available',
+        fbp: fbp || 'not_available',
+        cartItems: formattedCartItems, // Use formatted cart items here
+        first_party_collection: true,
+      });
+    } else {
+      console.error('Facebook Pixel is not loaded.');
+    }
+  
+  }, [cartItems]);
 
   return (
     <div className="container mx-auto py-10 px-4">
