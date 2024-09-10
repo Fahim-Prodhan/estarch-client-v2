@@ -67,7 +67,7 @@ const ProductModal = () => {
       {/* Overlay */}
 
       {/* Mobile Modal */}
-      <div className={`fixed lg:hidden md:hidden inset-0 bg-black bg-opacity-50  flex items-center justify-center z-[100] w-full h-screen`}>
+      <div className={`fixed lg:hidden md:hidden inset-0 bg-[#0000002b] flex items-center justify-center z-[100] w-full h-screen`}>
 
         <div onClick={() => { setSelectedSize(null) , dispatch(closeProductModal())}} className={` fixed bottom-0 p-6 rounded-lg shadow-lg max-w-md h-screen w-full`}
         ></div>
@@ -132,7 +132,7 @@ const ProductModal = () => {
       </div>
 
       {/* Desktop Modal */}
-      <div className="fixed inset-0 bg-black bg-opacity-50 md:flex lg:flex  justify-center z-[99999] hidden">
+      <div className="fixed inset-0 bg-[#0000002b] md:flex lg:flex  justify-center z-[99999] hidden">
         <div onClick={() => { setSelectedSize(null) , dispatch(closeProductModal())}} className={`rounded-lg w-11/12 md:w-2/3 lg:w-full p-6 absolute h-screen`}></div>
         <div className={`bg-white rounded-lg w-11/12 md:w-2/3 lg:w-1/2 p-6 relative h-fit mt-5 transform transition-all duration-300 ${isAnimating ? 'translate-y-0' : '-translate-y-full'}`}>
           <button
