@@ -35,7 +35,7 @@ export default function Checkout() {
     if (value === "Inside Dhaka") {
       setShippingCharge(60);
     } else if (value === "Outside Dhaka") {
-      setShippingCharge(130);
+      setShippingCharge(120);
     } else {
       setShippingCharge(null);
     }

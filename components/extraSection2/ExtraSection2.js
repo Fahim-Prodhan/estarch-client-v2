@@ -94,10 +94,10 @@ export default function ExtraSection2() {
 
     const truncateText = (text, maxLength) => {
         return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
-      };
-      
+    };
+
     return (
-        <div className={`${products.length < 1 ? 'hidden': ''}`}>
+        <div className={`${products.length < 1 ? 'hidden' : ''}`}>
             <div className="slider-container mx-0 lg:mx-20">
                 <h1 className='text-center mt-8 font-bold md:text-2xl lg:text-2xl text-lg uppercase'>{extraSection?.name2} Section</h1>
                 <div className='text-center mb-4'>
@@ -110,25 +110,28 @@ export default function ExtraSection2() {
                 </div>
                 <Slider {...settings}>
                     {products.map((product, index) => (
-                        <div key={product._id} className="card card-compact bg-base-100 w-96 shadow-md rounded-none h-[350px] md:h-full relative ">
+                        <div
+                            key={product._id}
+                            className="card card-compact bg-base-200 shadow-none  rounded-none relative border-2 border-base-200 hover:border-blue-300"
+                        >
                             <Link href={`/product/${product?.productName}?sku=${product?.SKU}`}>
-                                <figure className='relative'>
+                                <figure>
                                     <Image
                                         src={`${baseUrl}/${product.images[0]}`}
-                                        width={500}
-                                        height={0}
+                                        width={320}
+                                        height={400}
+                                        priority={index === 0}
                                         alt={product.productName}
-                                        loading={index === 0 ? 'lazy' : 'eager'}
-                                        sizes='(max-width: 640px) 30vw, (max-width: 768px) 50vw, (max-width: 1024px) 800vw, 100vw'
+                                        sizes='(max-width: 640px) 60vw, (max-width: 768px) 60vw, (max-width: 1024px) 800vw, 100vw'
                                     />
                                 </figure>
                                 <div className="pt-1 lg:px-6 px-2">
-                                <h2 className="md:text-[15px] text-[12px] font-bold text-center whitespace-nowrap overflow-hidden text-ellipsis">
-                                            {truncateText(product.productName, product.productName.length)}
-                                        </h2>
+                                    <h2 className="md:text-[15px] text-[12px] font-bold text-center whitespace-nowrap overflow-hidden text-ellipsis">
+                                        {truncateText(product.productName, product.productName.length)}
+                                    </h2>
                                     <div className='text-center'>
-                                        <div className="absolute md:relative bottom-8 md:bottom-0 left-9 md:left-0">
-                                            <p className={`bg-[#000]  text-white text-sm md:text-[16px] mt-2 w-full md:w-[50%] mx-auto mb-2 ${product.regularPrice - product.salePrice > 0 ? 'visible' : 'invisible'}`}>
+                                        <div className="">
+                                            <p className={`bg-black text-white text-sm md:text-[14px] mt-2 md:mx-14 mx-6 ${product.regularPrice - product.salePrice > 0 ? 'visible' : 'invisible'}`}>
                                                 Save Tk. {product.regularPrice - product.salePrice}
                                             </p>
                                             {
@@ -142,15 +145,17 @@ export default function ExtraSection2() {
                                         </div>
 
                                         {product.regularPrice - product.salePrice <= 0 && (
-                                            <p className='my-1 text-[17px] md:text-[20px] text-black text-center absolute md:relative bottom-8 md:bottom-0 left-[60px] md:left-0'>
+                                            <p className='my-1 text-[17px] md:text-[20px] text-black text-center bottom-8 md:bottom-10 left-14 md:left-[110px]'>
                                                 <span className=''>TK.</span>{product.salePrice}
                                             </p>
                                         )}
                                     </div>
                                 </div>
                             </Link>
-                            <div className='text-center shadow-lg absolute w-full bottom-0 md:relative '>
+                            <div className='text-center shadow-lg  w-full bottom-0'>
+
                                 <button onClick={() => dispatch(openProductModal(product))} className=" bg-[#1E201E] text-white w-full md:py-2 py-1">BUY NOW</button>
+
                             </div>
                         </div>
                     ))}
