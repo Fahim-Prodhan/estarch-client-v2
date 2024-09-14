@@ -28,9 +28,6 @@ const ProductDetails = () => {
   const { product_name } = useParams();
   const searchParams = useSearchParams();
   const sku = searchParams.get("sku")
-
-
-
   const router = useRouter();
   useEffect(() => {
     const fetchProduct = async () => {
@@ -53,24 +50,23 @@ const ProductDetails = () => {
   useEffect(() => {
     if (typeof window === 'undefined' || typeof document === 'undefined') return;
     if (!product) return;
-  
+
     const fbc = document.cookie.split('; ').find(row => row.startsWith('_fbc='))?.split('=')[1];
     const fbp = document.cookie.split('; ').find(row => row.startsWith('_fbp='))?.split('=')[1];
-    if (typeof fbq === 'function') {
-      fbq('track', 'product_view', {
-        content_type: 'product',
-        content_ids: product.SKU || 'undefined',
-        content_name: product.productName || 'undefined',
-        value: product.salePrice || 'undefined',
-        currency: 'BDT',
-        fbc: fbc || 'not_available',
-        fbp: fbp || 'not_available',
-        first_party_collection: true,
-      });
-    } else {
-      console.error('Facebook Pixel is not loaded.');
-    }
-    
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'product_view',
+      content_ids: product.SKU || 'undefined',
+      content_name: product.productName || 'undefined',
+      value: product.salePrice || 'undefined',
+      currency: 'BDT',
+      fbc: fbc || 'not_available',
+      fbp: fbp || 'not_available',
+      content_type: 'product',
+      first_party_collection: true,
+    });
+
   }, [product]);
 
   const handleAddToCart = () => {
@@ -98,7 +94,7 @@ const ProductDetails = () => {
           content_name: product.productName || 'undefined',
           value: product.salePrice || 'undefined',
           currency: 'BDT',
-          Size:selectedSize
+          Size: selectedSize
         });
         setSelectedSize('')
       } else {

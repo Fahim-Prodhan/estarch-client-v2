@@ -32,6 +32,43 @@ export default function OrderStatus() {
 
     fetchOrder();
   }, [id]);
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return;
+
+    // Extract Facebook cookies
+    const fbc = document.cookie.split('; ').find(row => row.startsWith('_fbc='))?.split('=')[1] || 'not_available';
+    const fbp = document.cookie.split('; ').find(row => row.startsWith('_fbp='))?.split('=')[1] || 'not_available';
+
+    if (!order) return; // Ensure fetchedProduct is defined
+
+    const simplifiedCartItems = order.cartItems.map(item => ({
+      title: item.title,
+      sku: item.productId.SKU,
+      size: item.size,
+      value: item.price ,
+      quantity: item.quantity
+    }));
+  
+    // Format the cart items into a more organized structure for display
+    const formattedCartItems = simplifiedCartItems.map(item => `
+      Title: ${item.title}
+      SKU: ${item.sku}
+      Size: ${item.size}
+      Price: ${item.value} BDT
+      Quantity: ${item.quantity}
+    `).join('\n-------------------\n');
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'order_purchase',
+      Product:formattedCartItems || 'undefined',
+      currency: 'BDT',
+      fbc: fbc || 'not_available',
+      fbp: fbp || 'not_available',
+      content_type: 'product',
+      first_party_collection: true,
+    });
+  }, [order]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -48,6 +85,9 @@ export default function OrderStatus() {
 
     window.open(whatsappUrl, "_blank");
   };
+
+
+
   return (
     <div className="bg-gray-100 mt-10 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
       <Head>

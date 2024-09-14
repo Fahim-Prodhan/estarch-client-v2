@@ -48,14 +48,7 @@ export default function Checkout() {
     }, 0);
   };
 
-  const discount = () => {
-    return cartItems.reduce((acc, item) => {
-      const itemTotal = (item.product.discount) * item.quantity;
-      return acc + itemTotal;
-    }, 0);
-  };
-
-
+ 
   const calculateTotal = () => {
     if (typeof window === 'undefined') {
       return calculateSubtotal() + (shippingCharge || 0);
@@ -87,28 +80,20 @@ export default function Checkout() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const orderData = {
-      serialId: 'E-commerce',
       name: formData.name,
       phone: formData.phone,
       deliveryCharge: shippingCharge,
       address: formData.address,
       area: formData.area,
-      discount: discount(),
       orderNotes: formData.orderNotes,
       cartItems: cartItems.map(item => ({
         productId: item.id,
-        discountAmount: item.product.discount,
         title: item.product.title,
         quantity: item.quantity,
-        price: item.product.price,
         size: item.size
       })),
       paymentMethod: paymentMethod,
-      totalAmount: calculateTotal() - (shippingCharge || 0),
-      grandTotal: calculateTotal(),
-      orderStatus: 'new',
       userId: userId,
     };
 
@@ -125,11 +110,11 @@ export default function Checkout() {
 
   useEffect(() => {
     if (typeof window === 'undefined' || typeof document === 'undefined') return;
-  
+
     // Extract Facebook cookies
     const fbc = document.cookie.split('; ').find(row => row.startsWith('_fbc='))?.split('=')[1];
     const fbp = document.cookie.split('; ').find(row => row.startsWith('_fbp='))?.split('=')[1];
-  
+
     // Prepare cart items with only the necessary fields
     const simplifiedCartItems = cartItems.map(item => ({
       title: item.product.title,
@@ -138,7 +123,7 @@ export default function Checkout() {
       value: item.product.price,
       quantity: item.quantity
     }));
-  
+
     // Format the cart items into a more organized structure for display
     const formattedCartItems = simplifiedCartItems.map(item => `
       Title: ${item.title}
@@ -147,20 +132,17 @@ export default function Checkout() {
       Price: ${item.value} BDT
       Quantity: ${item.quantity}
     `).join('\n-------------------\n');  // Join each item with a separator for clarity
-  
-    if (typeof fbq === 'function' ) {
-      fbq('track', 'checkout', {
-        content_type: 'product',
-        currency: 'BDT',
-        fbc: fbc || 'not_available',
-        fbp: fbp || 'not_available',
-        cartItems: formattedCartItems, // Use formatted cart items here
-        first_party_collection: true,
-      });
-    } else {
-      console.error('Facebook Pixel is not loaded.');
-    }
-  
+    
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'checkout',
+      Product:formattedCartItems || 'undefined',
+      currency: 'BDT',
+      fbc: fbc || 'not_available',
+      fbp: fbp || 'not_available',
+      content_type: 'product',
+      first_party_collection: true,
+    });
   }, [cartItems]);
 
   return (
@@ -268,7 +250,7 @@ export default function Checkout() {
           </form>
         </div>
 
-    
+
         <div className="md:w-1/2 rounded-md mt-4 md:mt-0 p-4 lg:px-16 py-8 border shadow-lg">
           <p className='text-center py-2 bg-blue-400 text-white text-xl'>Your Order</p>
           <div className='mt-4'>
@@ -319,7 +301,7 @@ export default function Checkout() {
                 <span>৳ {shippingCharge}</span>
               </div>
             )}
-            <hr className='my-1'/>
+            <hr className='my-1' />
             <div className='flex justify-between'>
               <p className='text-xl font-bold'>Total</p>
               <p className='text-xl text-red-500 font-bold'>৳ {calculateTotal().toFixed(2)}</p>

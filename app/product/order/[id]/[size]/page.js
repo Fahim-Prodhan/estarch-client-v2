@@ -27,9 +27,6 @@ export default function Checkout() {
         orderNotes: '',
         paymentMethod: ''
     });
-
-
-
     useEffect(() => {
         const fetchProduct = async () => {
             try {
@@ -64,9 +61,6 @@ export default function Checkout() {
         const subtotal = product.salePrice * quantity;
         return subtotal + (shippingCharge || 0);
     };
-    const discount = () => {
-        return product.discount.amount * quantity
-    };
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -92,27 +86,19 @@ export default function Checkout() {
 
 
         const orderData = {
-            serialId: 'E-commerce',
             name: formData.name,
             phone: formData.phone,
-            deliveryCharge: shippingCharge,
             address: formData.address,
             area: formData.area,
-            discount: discount(),
             orderNotes: formData.orderNotes,
             cartItems: [{
                 productId: product._id,
-                discountAmount: product?.discount?.amount,
                 title: product.productName,
-                price: product.salePrice,
                 quantity: quantity,
                 size: size
             }],
             paymentMethod: paymentMethod,
-            totalAmount: calculateTotal() - shippingCharge,
-            orderStatus: 'new',
             userId: userId,
-            grandTotal: calculateTotal()
         };
 
         try {
@@ -123,7 +109,48 @@ export default function Checkout() {
             console.error('There was an error placing the order!', error);
         }
     };
+    useEffect(() => {
+        if (typeof window === 'undefined' || typeof document === 'undefined') return;
 
+        // Extract Facebook cookies
+        const fbc = document.cookie.split('; ').find(row => row.startsWith('_fbc='))?.split('=')[1];
+        const fbp = document.cookie.split('; ').find(row => row.startsWith('_fbp='))?.split('=')[1];
+        const  cartItems = [{
+            title: product?.productName,
+            price: product?.salePrice,
+            quantity: quantity,
+            size: size,
+            sku:product?.SKU
+        }]
+        // Prepare cart items with only the necessary fields
+        const simplifiedCartItems = cartItems.map(item => ({
+            title: item?.title,
+            sku: item?.sku,
+            size: item?.size,
+            value: item?.price,
+            quantity: item?.quantity
+        }));
+
+        // Format the cart items into a more organized structure for display
+        const formattedCartItems = simplifiedCartItems.map(item => `
+          Title: ${item?.title}
+          SKU: ${item.sku}
+          Size: ${item.size}
+          Price: ${item.value} BDT
+          Quantity: ${item.quantity}
+        `).join('\n-------------------\n');  // Join each item with a separator for clarity
+
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            event: 'checkout',
+            Product: formattedCartItems || 'undefined',
+            currency: 'BDT',
+            fbc: fbc || 'not_available',
+            fbp: fbp || 'not_available',
+            content_type: 'product',
+            first_party_collection: true,
+        });
+    }, []);
     return (
         <div className="container mx-auto py-10 px-4">
             <div className="flex flex-col md:flex-row gap-6">
@@ -344,42 +371,42 @@ export default function Checkout() {
                     <div className="md:w-1/2 rounded-md mt-4 md:mt-0 p-4 lg:px-16 py-8 border shadow-lg">
                         <p className='text-center py-2 bg-blue-400 text-white text-xl'>Your Order</p>
                         <div className='mt-4'>
-                
-                                <div>
-                                    <div className='grid grid-cols-4 lg:grid-cols-6 '>
-                                        <p className='block mb-2 font-bold whitespace-nowrap overflow-hidden text-ellipsis col-span-4 lg:col-span-6'> {product.productName} - 1 pcs</p>
-                                        <div className=''>
-                                            <Image
-                                                className=' object-cover'
-                                                src={`${baseUrl}/${product?.images[0]}`}
-                                                alt={product.productName}
-                                                width={70} // Width in pixels
-                                                height={70} // Height in pixels
-                                            />
-                                        </div>
-                                        <div className='col-span-2'>
-                                            <p className='block whitespace-nowrap text-xs lg:text-lg overflow-hidden text-ellipsis'>SKU: <span className='font-semibold'>{product.SKU}</span></p>
-                                            <span>
-                                                {size && (
-                                                    <p className="text-sm lg:text-lg">Your Size: <span className='font-semibold'>{size}</span></p>
-                                                )}
-                                            </span>
-                                            <div className='flex items-center gap-2 mt-1'>
-                                                <span>Qty:</span>
-                                                <button onClick={handleDecrease} className="bg-gray-300  w-5 h-5 flex items-center justify-center">-</button>
-                                                <span>{quantity}</span>
-                                                <button onClick={ handleIncrease} className="bg-gray-300  w-5 h-5 flex items-center justify-center">+</button>
-                                            </div>
-                                        </div>
-                                        <div className='lg:col-span-3 place-self-end text-end'>
-                                            <p className='line-through text-red-500'>৳ {product.salePrice + product?.discount?.amount}</p>
-                                            <span className=''>৳ {product.salePrice}</span>
-                                            <button onClick={ handleRemoveItem} className=" flex items-center justify-center underline">Remove</button>
+
+                            <div>
+                                <div className='grid grid-cols-4 lg:grid-cols-6 '>
+                                    <p className='block mb-2 font-bold whitespace-nowrap overflow-hidden text-ellipsis col-span-4 lg:col-span-6'> {product.productName} - 1 pcs</p>
+                                    <div className=''>
+                                        <Image
+                                            className=' object-cover'
+                                            src={`${baseUrl}/${product?.images[0]}`}
+                                            alt={product.productName}
+                                            width={70} // Width in pixels
+                                            height={70} // Height in pixels
+                                        />
+                                    </div>
+                                    <div className='col-span-2'>
+                                        <p className='block whitespace-nowrap text-xs lg:text-lg overflow-hidden text-ellipsis'>SKU: <span className='font-semibold'>{product.SKU}</span></p>
+                                        <span>
+                                            {size && (
+                                                <p className="text-sm lg:text-lg">Your Size: <span className='font-semibold'>{size}</span></p>
+                                            )}
+                                        </span>
+                                        <div className='flex items-center gap-2 mt-1'>
+                                            <span>Qty:</span>
+                                            <button onClick={handleDecrease} className="bg-gray-300  w-5 h-5 flex items-center justify-center">-</button>
+                                            <span>{quantity}</span>
+                                            <button onClick={handleIncrease} className="bg-gray-300  w-5 h-5 flex items-center justify-center">+</button>
                                         </div>
                                     </div>
-                                    <hr className='mt-2 mb-4' />
+                                    <div className='lg:col-span-3 place-self-end text-end'>
+                                        <p className='line-through text-red-500'>৳ {product.salePrice + product?.discount?.amount}</p>
+                                        <span className=''>৳ {product.salePrice}</span>
+                                        <button onClick={handleRemoveItem} className=" flex items-center justify-center underline">Remove</button>
+                                    </div>
                                 </div>
-                          
+                                <hr className='mt-2 mb-4' />
+                            </div>
+
                             <div className='flex justify-between mt-4'>
                                 <p className='text-lg '>SubTotal</p>
                                 <p className='text-lg text-red-500'>৳ {(product.salePrice * quantity).toFixed(2)}</p>
