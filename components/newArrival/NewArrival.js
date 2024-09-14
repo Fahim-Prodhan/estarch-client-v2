@@ -116,7 +116,7 @@ export default function NewArrival() {
                       <p className='absolute top-2 bg-error text-white left-2 px-2 rounded-md'>New</p>
                     </figure>
                     <div className="pt-1 px-6">
-                      <h2 className="md:text-[15px] text-[12px] font-bold text-center whitespace-nowrap overflow-hidden text-ellipsis">
+                      <h2 className="md:text-[17px] text-[14px] font-bold text-center whitespace-nowrap overflow-hidden text-ellipsis">
                         {truncateText(product.productName, product.productName.length)}
                       </h2>
                       <div className='text-center'>
